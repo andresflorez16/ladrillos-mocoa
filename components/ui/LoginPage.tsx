@@ -1,44 +1,38 @@
-import { FC } from 'react'
-import { Container, useTheme, Card, Text, Input, Spacer } from '@nextui-org/react'
+import React, { useState } from 'react'
+import { Text } from '@nextui-org/react'
+import { signIn, authErrors } from '../../firebase'
+import { Credentials } from 'interfaces'
+import { LoginForm } from 'components/forms'
 
-export const LoginPage: FC = () => {
-	const { theme } = useTheme()
+export const LoginPage: React.FC = () => {
+	const [msg, setMsg] = useState('')
 
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		const { target }: any = e
+		const { email, password } = Object.fromEntries(new FormData(target))
+		signIn({ email, password } as Credentials)
+			.then(cred => setMsg(''))
+			.catch(err => {
+				const { code } = err
+				setMsg(authErrors(code))
+			})
+	}
+
+	const handleChange = (e: React.ChangeEvent) => {
+		const { value }: string | any = e.target
+		!value && setMsg('')
+	}
   return (
-		<Container
-			display='flex' 
-			gap={2}
-			justify='center'
-			alignItems='center'
-			css={{
-				height: 'calc(100vh - 100px)',
-				'@xsMax': {
-					width: '360px'
-				}
-			}}
-			xs
-		>
-			<Card css={{ backgroundColor: theme?.colors.cyan500.value }}>
-					<Card.Header>
-						<Text h2 weight='bold'>Iniciar sesión</Text>
-					</Card.Header>
-					<Card.Body>
-						<Spacer y={1.5} />
-						<Input
-							id='email'
-							clearable
-							labelPlaceholder='Correo electrónico'
-							size='xl'
-						/>
-						<Spacer y={2.5} />
-						<Input.Password
-							id='password'
-							clearable
-							labelPlaceholder='Contraseña'
-							size='xl'
-						/>
-					</Card.Body>
-				</Card>
-    </Container>
+		<>
+			<LoginForm handleSubmit={handleSubmit} handleChange={handleChange} />
+			<Text
+				h4
+				color='error'
+				css={{ position: 'absolute', bottom: 20 }}
+			>
+				{msg}
+			</Text>
+    </>
   )
 }
