@@ -17,7 +17,7 @@ export const MainLayout: FC<Props> = ({ children, title }) => {
 				<meta name='description' content="Ladrillos Mocoa Website" />
 			</Head>
       <Navbar />
-      <Container display='flex' justify='center' alignItems='center' direction='row' gap={1} css={{ padding: '0 20px', marginTop: '100px' }}>
+      <Container display='flex' justify='center' alignItems='center' direction='row' gap={1} xl css={{ padding: '0 20px', marginTop: '100px', width: '100%' }}>
         {children}
       </Container>
     </>

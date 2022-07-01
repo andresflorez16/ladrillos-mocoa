@@ -27,9 +27,9 @@ export const LoginPage: React.FC = () => {
 		<>
 			<LoginForm handleSubmit={handleSubmit} handleChange={handleChange} />
 			<Text
-				h4
-				color='error'
-				css={{ position: 'absolute', bottom: 20 }}
+				h3
+				color='#f00'
+				css={{ position: 'absolute', bottom: 20, backgroundColor: '#fff', p: '0 5px', borderRadius: '10px' }}
 			>
 				{msg}
 			</Text>

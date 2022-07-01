@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { Loading, Container, useTheme } from '@nextui-org/react'
 import { MainLayout } from 'components/layouts'
 import { LoginPage } from 'components/ui'
@@ -7,10 +8,11 @@ import { useUser, USER_STATES } from 'hooks'
 
 const Home: NextPage = () => {
   const user = useUser()
+  const router = useRouter()
   const { theme } = useTheme()
 
   useEffect(() => {
-    user
+    user && router.replace('/home')
   }, [user])
 
   return (
@@ -24,7 +26,6 @@ const Home: NextPage = () => {
 				height: 'calc(90vh - 100px)',
 				margin: '0 auto',
 				borderRadius: '10px',
-				backgroundColor: theme?.colors.cyan500.value,
 				'@xsMax': {
 					width: '360px'
 				}

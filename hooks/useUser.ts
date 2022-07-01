@@ -17,11 +17,11 @@ export const useUser = (): UserInfo | null | undefined => {
     onAuthUser(setUser)
   }, [])
 
-  /*useEffect(() => {*/
-    /*if (router.asPath === '/') {*/
-      /*user === USER_STATES.NOT_LOGGED && router.push('/')*/
-    /*}*/
-  /*}, [user])*/
+  useEffect(() => {
+    if (router.asPath === '/home') {
+      user === USER_STATES.NOT_LOGGED && router.push('/')
+    }
+  }, [user])
 
   return user
 }

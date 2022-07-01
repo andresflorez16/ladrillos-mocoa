@@ -9,7 +9,7 @@ export const LoginForm: React.FC<FormProps> = ({ handleSubmit, handleChange }) =
         <Text
           h2
           weight='bold'
-          css={{ textGradient: "45deg, $yellow600 -20%, $red600 100%" }}
+          color='#fff'
         >
           Iniciar sesión
         </Text>
@@ -34,6 +34,7 @@ export const LoginForm: React.FC<FormProps> = ({ handleSubmit, handleChange }) =
             type='password'
             required
             name='password'
+            label='Password'
             clearable
             labelPlaceholder='Contraseña'
             size='xl'
