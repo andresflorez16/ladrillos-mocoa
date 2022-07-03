@@ -4,7 +4,9 @@ export const darkTheme = createTheme({
   type: 'light',
   theme: {
     colors: {
-      primaryWhite: '#fff'
-    } // override dark theme colors
+      myColor: '#ffffff'
+    },
+    space: {},
+    fonts: {}
   }
 });

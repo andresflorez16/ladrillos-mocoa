@@ -1,6 +1,6 @@
 import React from 'react'
 import Document, { DocumentContext, DocumentInitialProps, Html, Head, Main, NextScript } from 'next/document'
-import { CssBaseline } from '@nextui-org/react'
+import { ColorModeScript } from '@chakra-ui/react'
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -17,8 +17,9 @@ class MyDocument extends Document {
   render() {
     return(
       <Html lang='es'>
-        <Head>{CssBaseline.flush()}</Head>
+        <Head />
         <body>
+          <ColorModeScript />
           <Main />
           <NextScript />
         </body>

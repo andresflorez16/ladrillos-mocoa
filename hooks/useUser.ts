@@ -18,8 +18,11 @@ export const useUser = (): UserInfo | null | undefined => {
   }, [])
 
   useEffect(() => {
-    if (router.asPath === '/home') {
-      user === USER_STATES.NOT_LOGGED && router.push('/')
+/*    if (router.asPath === '/home' ) {*/
+      /*user === USER_STATES.NOT_LOGGED && router.push('/')*/
+    /*}*/
+    if (router.asPath !== '/' && user === USER_STATES.NOT_LOGGED) {
+      router.push('/')
     }
   }, [user])
 

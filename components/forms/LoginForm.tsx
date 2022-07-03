@@ -1,60 +1,82 @@
-import React from 'react'
-import { Card, Spacer, Input, Button, Text } from '@nextui-org/react'
+import React, { useState } from 'react'
+import { 
+  Box, 
+  Text, 
+  FormControl, 
+  FormLabel, 
+  InputGroup, 
+  InputRightElement, 
+  Input, 
+  FormErrorMessage, 
+  Button, 
+  IconButton 
+} from '@chakra-ui/react'
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { FormProps } from 'interfaces'
 
 export const LoginForm: React.FC<FormProps> = ({ handleSubmit, handleChange }) => {
+  const [show, setShow] = useState(false)
+
+  const handleShow = () => setShow(!show)
+
   return (
-    <Card css={{ backgroundColor: 'transparent' }}>
-      <Card.Header>
-        <Text
-          h2
-          weight='bold'
-          color='#fff'
-        >
-          Iniciar sesión
-        </Text>
-      </Card.Header>
-      <Card.Body>
-        <form style={{ width: '100%' }} onSubmit={handleSubmit}>
-          <Spacer y={1.5} />
+    <>
+      <Text 
+        as='div' 
+        display='flex' 
+        justifyContent='start' 
+        width='100%' 
+        textAlign='start' 
+        fontSize={['2xl', '4xl']} 
+        mb={10} 
+        fontWeight='bold' 
+        color='white'
+      >
+        Iniciar Sesión
+      </Text>
+      <FormControl as='form' onSubmit={handleSubmit}>
+        <FormLabel
+          color='white'
+        >Correo electrónico</FormLabel>
+        <Input
+          onChange={handleChange}
+          id='email'
+          name='email'
+          m='10px 0'
+          type='email'
+          size='lg'
+          placeholder='Email' 
+          color='#fff' 
+          p={5}
+          borderRadius="10px"
+        />
+        <FormLabel
+          color='white'
+          mt={5}
+        >Contraseña</FormLabel>
+        <InputGroup size='lg'>
           <Input
-            id='email'
-            type='email'
-            required
-            name='email'
-            clearable
-            labelPlaceholder='Correo electrónico'
-            size='xl'
             onChange={handleChange}
-            css={{ width: '100%' }}
-          />
-          <Spacer y={2.5} />
-          <Input.Password
             id='password'
-            type='password'
-            required
             name='password'
-            label='Password'
-            clearable
-            labelPlaceholder='Contraseña'
-            size='xl'
-            onChange={handleChange}
-            css={{ width: '100%' }}
+            m='10px 0'
+            type={ show ? 'text' : 'password' }
+            size='lg'
+            placeholder='Contraseña' 
+            color='#fff' 
+            p={5}
+            borderRadius="10px"
           />
-          <Spacer y={2.5} />
-          <Button
-            type='submit'
-            bordered
-            color='gradient'
-            size='md'
-            ghost
-            css={{
-              margin: '0 auto'
-            }}>
-            Iniciar
-          </Button>
-        </form>
-      </Card.Body>
-    </Card>
+          <InputRightElement w='4.5rem' mt={2.5}>
+            <IconButton size='sm' aria-label='Show password' icon={ show ? <ViewOffIcon /> : <ViewIcon /> } onClick={handleShow} />
+          </InputRightElement>
+        </InputGroup>
+        <Button
+          type='submit'
+          mt={5}
+          size='lg'
+        >Ingresar</Button>
+        </FormControl>
+    </>
   )
 }
