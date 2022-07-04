@@ -8,8 +8,11 @@ import {
 } from '@chakra-ui/react'
 import { NumberInputBill } from './NumberInputBill'
 
+interface Props {
+  product: string
+}
 
-export const InputBill: React.FC = () => {
+export const InputBill: React.FC<Props> = ({ product }) => {
   
   return (
     <Box 
@@ -26,9 +29,9 @@ export const InputBill: React.FC = () => {
       >
         <FormLabel>Clase Producto:</FormLabel>
         <Select _focus={{ background: 'white' }} color='black' variant='filled' size='sm'>
-          <option>Ladrillo</option>
-          <option>Ladrillo</option>
-          <option>Ladrillo</option>
+          <option>{product}</option>
+          <option>{product}</option>
+          <option>{product}</option>
         </Select>
       </Box>
       <Box
@@ -37,7 +40,7 @@ export const InputBill: React.FC = () => {
         w={{ base: '80%', md: '20%' }}
       >
         <FormLabel>Cantidad:</FormLabel>
-        <NumberInputBill />
+        <Input size='sm' type='number' />
       </Box>
       <Box
         color='white'

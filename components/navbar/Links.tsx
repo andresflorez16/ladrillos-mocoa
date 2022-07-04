@@ -35,6 +35,7 @@ export const Links: FC = () => {
             p={2}
             color='white'
             textDecor={ asPath === '/facturar' ? 'underline' : 'none' }
+            fontWeight={ asPath === '/facturar' ? 'bold' : 'normal' }
           >
             Facturar
           </Link>
@@ -65,6 +66,7 @@ export const Links: FC = () => {
                 p={2} 
                 color='black' 
                 textDecor={ asPath === '/facturar' ? 'underline' : 'none' }
+                fontWeight={ asPath === '/facturar' ? 'bold' : 'normal' }
               >
                 Facturar
               </MenuItem>
