@@ -21,6 +21,7 @@ export const Navbar: React.FC = () => {
       bg='#0987A099'
       css={{ backdropFilter: 'blur(10px)' }}
       zIndex={2}
+      boxShadow='1px 1px 10px #aaa7'
     >
       <Flex
         justifyContent='space-between'

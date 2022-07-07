@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
-import { NextPage } from 'next'
+import { useEffect, useState } from 'react'
+import { NextPage, GetStaticProps } from 'next'
 import { Box, Text, Spinner } from '@chakra-ui/react'
 import { useUser, USER_STATES } from 'hooks'
+import { getInventory } from '../../firebase'
 import { BillForm } from 'components/forms'
+import { Inventory } from 'interfaces'
 
-const BillPage: NextPage = () => {
+const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
   const user = useUser()
 
   useEffect(() => {
@@ -26,12 +28,19 @@ const BillPage: NextPage = () => {
       {
         user &&
           <>
-            <Text fontSize='2em' color='white'>Nueva venta</Text>
-            <BillForm />
+            <Text fontSize='2em' mb={5} color='white'>Nueva venta</Text>
+            <BillForm bricks={bricks} cements={cements} />
           </>
       }
     </Box>
   )
+}
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { brickData, cementData } = await getInventory()
+  const bricks = brickData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+  const cements = cementData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+  return { props: { bricks, cements } }
 }
 
 export default BillPage

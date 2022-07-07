@@ -5,23 +5,17 @@ import {
   Input
 } from '@chakra-ui/react'
 
-export const NumberInputBill = () => {
-  const [value, setValue] = useState('0.0')
+interface Props {
+  handleChangeValue: React.ChangeEventHandler,
+  isError: boolean
+}
 
-  const formatValue = (e: any) => {
-    const val = e.target.value
-    return val.length > 3 ? setValue(parseFloat(val).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')) : setValue(val)
-  }
-
-  const parse = (val: any) => {
-    val = val.target.value
-    return parseFloat(val).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
-  }
+export const NumberInputBill: React.FC<Props> = ({ handleChangeValue, isError }) => {
 
   return (
-    <InputGroup size='sm'>
+    <InputGroup size='sm' border={ isError ? '1px solid red' : 'white' }>
       <InputLeftAddon color='black' children='$' />
-      <Input type='number'/>
+      <Input type='number' defaultValue='0.0' onChange={e => handleChangeValue(e)} /> : 
     </InputGroup>
   )
 }
