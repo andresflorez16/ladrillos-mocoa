@@ -9,8 +9,10 @@ import {
   Button
 } from '@chakra-ui/react'
 
-export const BillData: React.FC = () => {
+export const BillData: React.FC<{ isValid: boolean }> = ({ isValid }) => {
+
   const [checkEmail, setCheckEmail] = useState('yes')
+  console.log(isValid)
 
   return (
     <FormControl
@@ -57,7 +59,7 @@ export const BillData: React.FC = () => {
         display='flex'
         justifyContent='center'
       >
-        <Button type='submit' mr={5} color='black'>Confirmar</Button>
+        <Button type='submit' isDisabled mr={5} color='black'>Confirmar</Button>
         <Button type='submit' color='red'>Cancelar</Button>
       </Box>
     </FormControl>

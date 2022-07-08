@@ -5,8 +5,9 @@ import {
   Button,
   IconButton,
   Text,
+  Alert
 } from '@chakra-ui/react'
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import { AddIcon, DeleteIcon, WarningIcon } from '@chakra-ui/icons'
 import { generate } from 'shortid'
 import { InputBill } from './InputBill'
 import { BillData } from './BillData'
@@ -18,39 +19,55 @@ interface Props {
 }
 
 export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
-  const [brick, setBrick] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' }])
-  const [cement, setCement] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' }])
-  const [dataProduct, setDataProduct] = useState({})
+  const [brick, setBrick] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
+  const [cement, setCement] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
 
-  console.log(brick)
+  const getTotal = (): any => {
+    let subtotalBrick: number = 0
+    let subtotalCement: number = 0
+
+    if(brick.length > 0) {
+      if (brick[0].subtotal > 0 && brick.length > 1) {
+        subtotalBrick = brick.reduce((acc, el): any => acc.subtotal + el.subtotal) as unknown as number
+      } else subtotalBrick = brick[0].subtotal
+    }
+
+    if (cement.length > 0) {
+      if (cement[0].subtotal > 0 && cement.length > 1) {
+        subtotalCement = cement.reduce((acc, el): any => acc.subtotal + el.subtotal) as unknown as number
+      } else subtotalCement = cement[0].subtotal
+    }
+
+    if (!brick.find(el => el.subtotal < 0) && !cement.find(el => el.subtotal < 0)) return subtotalBrick + subtotalCement
+    else return -1
+  }
+
+  const totalFormat = () => total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
+
+  const [total, setTotal] = useState(getTotal())
+
+  const isValid = parseFloat(total) <= 0 
+
+  useEffect(() => {
+    setTotal(getTotal())
+  }, [brick, cement])
+
   const updateBrick = (data: ProductData) => {
-    const { id, cantity, price, subtotal, name } = data
-    if (brick.find(el => el.id === id)) {
-      const updatedBrick = brick.map(el => (
-        el.id === id
-          ? { ...el, cantity, price, subtotal, name }
-          : el
-      ))
+    if (brick.find(el => el.id === data.id)) {
       const oldBricks = brick.filter(el => el.id !== data.id)
-      return setBrick([ ...oldBricks, ...updatedBrick ])
+      return setBrick([ ...oldBricks, data ])
     }
   }
 
   const updateCement = (data: ProductData) => {
-    const { id, cantity, price, subtotal, name } = data
-    if (cement.find(el => el.id === id)) {
-      const updatedCement = cement.map(el => (
-        el.id === id
-          ? { ...el, cantity, price, subtotal, name }
-          : el
-      ))
+    if (cement.find(el => el.id === data.id)) {
       const oldCement = cement.filter(el => el.id !== data.id)
-      return setCement([ ...oldCement, ...updatedCement ])
+      return setCement([ ...oldCement, data ])
     }
   }
 
   const handleAddBrick = () => {
-    return setBrick(currentBrick => [ ...currentBrick, { id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' } ])
+    return setBrick(currentBrick => [ ...currentBrick, { id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' } ])
   }
 
   const handleRemoveBrick = (id: string) => {
@@ -58,7 +75,7 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
   }
 
   const handleAddCement = () => {
-    return setCement(currentCement => [ ...currentCement, { id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' } ])
+    return setCement(currentCement => [ ...currentCement, { id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' } ])
   }
 
   const handleRemoveCement = (id: string) => {
@@ -121,8 +138,21 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
           </Box>
         ))
       }
-      <Text float='right' fontSize={25} color='white'>Total: $1000</Text>
-      <BillData />
+      {
+        parseFloat(total) > 0 
+          ? <Text float='right' fontSize={25} color='white'>Total: {totalFormat()}</Text>
+          : 
+          <Alert 
+            w='50%'
+            fontSize='lg'
+            float='right' 
+            status='error' 
+          >
+            <WarningIcon mr={5} />
+            Verifique los datos!
+          </Alert>
+      }
+      <BillData isValid={isValid} />
     </Box>
   )
 }

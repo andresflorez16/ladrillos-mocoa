@@ -18,7 +18,7 @@ interface Props {
 
 export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
   const [ cantity, setCantity ] = useState('1')
-  const [value, setValue] = useState('0.0')
+  const [value, setValue] = useState('0')
   const [productClass, setProductClass] = useState(product[0].name)
 
   const getSubtotal = () => {
@@ -43,8 +43,8 @@ export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
     setValue(value)
   }
 
-  const isErrorValue = value === '0' || value === ''
-  const isErrorCantity = cantity === '0' || cantity === ''
+  const isErrorValue = value === '0' || value === '' || parseFloat(value) < 0
+  const isErrorCantity = cantity === '0' || cantity === '' || parseFloat(cantity) < 0
 
   const onChangeCantity = (e: React.ChangeEvent) => {
     e.preventDefault()
@@ -56,7 +56,6 @@ export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
     e.preventDefault()
     const { value } = e.target as unknown as { value: string }
     setProductClass(value)
-    console.log(value)
   }
 
   return (
