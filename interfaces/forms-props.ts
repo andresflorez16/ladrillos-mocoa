@@ -6,8 +6,9 @@ export interface FormProps {
 }
 
 export interface ProductData {
-  name: string,
-  cantity: string,
-  price: string,
-  subtotal: number
+  id: string,
+  cantity: number,
+  price: number,
+  subtotal: number,
+  name: string
 }

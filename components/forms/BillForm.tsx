@@ -18,12 +18,39 @@ interface Props {
 }
 
 export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
-  const [brick, setBrick] = useState([{ id: generate(), cantity: 1, price: 1000 }])
-  const [cement, setCement] = useState([{ id: generate(), cantity: 1, price: 1000 }])
+  const [brick, setBrick] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' }])
+  const [cement, setCement] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' }])
   const [dataProduct, setDataProduct] = useState({})
 
+  console.log(brick)
+  const updateBrick = (data: ProductData) => {
+    const { id, cantity, price, subtotal, name } = data
+    if (brick.find(el => el.id === id)) {
+      const updatedBrick = brick.map(el => (
+        el.id === id
+          ? { ...el, cantity, price, subtotal, name }
+          : el
+      ))
+      const oldBricks = brick.filter(el => el.id !== data.id)
+      return setBrick([ ...oldBricks, ...updatedBrick ])
+    }
+  }
+
+  const updateCement = (data: ProductData) => {
+    const { id, cantity, price, subtotal, name } = data
+    if (cement.find(el => el.id === id)) {
+      const updatedCement = cement.map(el => (
+        el.id === id
+          ? { ...el, cantity, price, subtotal, name }
+          : el
+      ))
+      const oldCement = cement.filter(el => el.id !== data.id)
+      return setCement([ ...oldCement, ...updatedCement ])
+    }
+  }
+
   const handleAddBrick = () => {
-    return setBrick(currentBrick => [ ...currentBrick, { id: generate(), cantity: 1, price: 1000 } ])
+    return setBrick(currentBrick => [ ...currentBrick, { id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' } ])
   }
 
   const handleRemoveBrick = (id: string) => {
@@ -31,7 +58,7 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
   }
 
   const handleAddCement = () => {
-    return setCement(currentCement => [ ...currentCement, { id: generate(), cantity: 1, price: 1000 } ])
+    return setCement(currentCement => [ ...currentCement, { id: generate(), cantity: 1, price: 1000, subtotal: 1000, name: '' } ])
   }
 
   const handleRemoveCement = (id: string) => {
@@ -61,7 +88,8 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
           >
           <FormControl as='form' >
             <InputBill 
-              setDataProduct={setDataProduct}
+              setData={updateBrick}
+              id={el.id}
               product={bricks} 
             />
           </FormControl>
@@ -84,7 +112,8 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
           >
           <FormControl as='form' >
             <InputBill 
-              setDataProduct={setDataProduct}
+              setData={updateCement}
+              id={el.id}
               product={cements} 
             />
           </FormControl>

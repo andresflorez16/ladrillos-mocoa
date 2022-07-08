@@ -12,10 +12,11 @@ import { Product, ProductData } from 'interfaces'
 
 interface Props {
   product: Product[],
-  setDataProduct: React.SetStateAction<any>
+  setData?: any,
+  id?: string
 }
 
-export const InputBill: React.FC<Props> = ({ product, setDataProduct }) => {
+export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
   const [ cantity, setCantity ] = useState('1')
   const [value, setValue] = useState('0.0')
   const [productClass, setProductClass] = useState(product[0].name)
@@ -32,13 +33,9 @@ export const InputBill: React.FC<Props> = ({ product, setDataProduct }) => {
   }
 
   useEffect(() => {
-    setDataProduct({
-      name: productClass,
-      cantity,
-      price: value,
-      subtotal: getSubtotal()
-    })
-  }, [cantity, value])
+    setData({ id, cantity: parseInt(cantity), price: parseFloat(value), subtotal: getSubtotal(), name: productClass })
+
+  }, [cantity, value, productClass])
 
   const handleChangeValue = (e: React.ChangeEvent) => {
     e.preventDefault()
@@ -59,6 +56,7 @@ export const InputBill: React.FC<Props> = ({ product, setDataProduct }) => {
     e.preventDefault()
     const { value } = e.target as unknown as { value: string }
     setProductClass(value)
+    console.log(value)
   }
 
   return (
@@ -76,7 +74,7 @@ export const InputBill: React.FC<Props> = ({ product, setDataProduct }) => {
       >
         <FormLabel>Clase Producto:</FormLabel>
         <Select 
-          onChange={e => handleProductClass(e)}
+          onChange={handleProductClass}
           _focus={{ background: 'white' }}
           cursor='pointer' 
           color='black'
