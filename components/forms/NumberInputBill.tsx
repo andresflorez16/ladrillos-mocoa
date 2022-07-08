@@ -15,7 +15,7 @@ export const NumberInputBill: React.FC<Props> = ({ handleChangeValue, isError })
   return (
     <InputGroup size='sm' border={ isError ? '1px solid red' : 'white' }>
       <InputLeftAddon color='black' children='$' />
-      <Input type='number' defaultValue='0.0' onChange={e => handleChangeValue(e)} /> : 
+      <Input type='number' defaultValue='1' onChange={e => handleChangeValue(e)} /> : 
     </InputGroup>
   )
 }

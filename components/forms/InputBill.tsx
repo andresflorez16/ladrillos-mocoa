@@ -18,18 +18,19 @@ interface Props {
 
 export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
   const [ cantity, setCantity ] = useState('1')
-  const [value, setValue] = useState('0')
+  const [value, setValue] = useState('1')
   const [productClass, setProductClass] = useState(product[0].name)
 
   const getSubtotal = () => {
     const formatCantity = parseFloat(cantity)
     const formatValue = parseFloat(value)
-    return formatCantity * formatValue
+    if (formatCantity > 0 && formatValue > 0) return formatCantity * formatValue
+    else return -1
   }
 
   const calcSubtotal = () => {
     const subt = getSubtotal()
-    return subt.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
+    return subt > 0 ? subt.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : '$0'
   }
 
   useEffect(() => {

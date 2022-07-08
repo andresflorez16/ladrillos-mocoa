@@ -11,8 +11,7 @@ import {
 
 export const BillData: React.FC<{ isValid: boolean }> = ({ isValid }) => {
 
-  const [checkEmail, setCheckEmail] = useState('yes')
-  console.log(isValid)
+  const [checkEmail, setCheckEmail] = useState('not')
 
   return (
     <FormControl
@@ -36,7 +35,7 @@ export const BillData: React.FC<{ isValid: boolean }> = ({ isValid }) => {
           <Radio mr={5} value='yes'>Sí</Radio>
           <Radio value='send'>Enviado</Radio>
         </RadioGroup>
-        <RadioGroup size='lg' defaultValue='yes' onChange={setCheckEmail}>
+        <RadioGroup size='lg' defaultValue={checkEmail} onChange={setCheckEmail}>
           <FormLabel mt={5}>Correo de facturación:</FormLabel>
           <Radio mr={5} value='not'>No</Radio>
           <Radio mb={5} value='yes'>Sí</Radio>
@@ -59,7 +58,7 @@ export const BillData: React.FC<{ isValid: boolean }> = ({ isValid }) => {
         display='flex'
         justifyContent='center'
       >
-        <Button type='submit' isDisabled mr={5} color='black'>Confirmar</Button>
+        <Button type='submit' isDisabled={isValid} mr={5} color='black'>Confirmar</Button>
         <Button type='submit' color='red'>Cancelar</Button>
       </Box>
     </FormControl>

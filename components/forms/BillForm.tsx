@@ -48,16 +48,18 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
 
   const isValid = parseFloat(total) <= 0 
 
-  useEffect(() => {
-    setTotal(getTotal())
-  }, [brick, cement])
-
   const updateBrick = (data: ProductData) => {
     if (brick.find(el => el.id === data.id)) {
+      let indexBrick = 0
+      brick.find((el, index) => el.id === data.id ? indexBrick = index : null)
       const oldBricks = brick.filter(el => el.id !== data.id)
-      return setBrick([ ...oldBricks, data ])
+      let arrTemp = brick
+      arrTemp[indexBrick] = data
+      return setBrick(arrTemp)
     }
   }
+
+  console.log(brick)
 
   const updateCement = (data: ProductData) => {
     if (cement.find(el => el.id === data.id)) {
@@ -65,6 +67,10 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
       return setCement([ ...oldCement, data ])
     }
   }
+  
+  useEffect(() => {
+    setTotal(getTotal())
+  }, [brick, cement])
 
   const handleAddBrick = () => {
     return setBrick(currentBrick => [ ...currentBrick, { id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' } ])
@@ -143,7 +149,7 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
           ? <Text float='right' fontSize={25} color='white'>Total: {totalFormat()}</Text>
           : 
           <Alert 
-            w='50%'
+            w={{ base: 'full', md: '50%' }}
             fontSize='lg'
             float='right' 
             status='error' 
