@@ -8,12 +8,12 @@ import {
   Text
 } from '@chakra-ui/react'
 import { NumberInputBill } from './NumberInputBill'
-import { Product, ProductData } from 'interfaces'
+import { ProductData } from 'interfaces'
 
 interface Props {
-  product: Product[],
-  setData?: any,
-  id?: string
+  product: ProductData[] | any,
+  setData: (data: ProductData) => void,
+  id: string
 }
 
 export const InputBill: React.FC<Props> = ({ product, id, setData }) => {

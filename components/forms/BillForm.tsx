@@ -11,14 +11,9 @@ import { AddIcon, DeleteIcon, WarningIcon } from '@chakra-ui/icons'
 import { generate } from 'shortid'
 import { InputBill } from './InputBill'
 import { BillData } from './BillData'
-import { Product, ProductData } from 'interfaces'
+import { ProductData, DataForm, Inventory } from 'interfaces'
 
-interface Props {
-  bricks: Product[],
-  cements: Product[]
-}
-
-export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
+export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
   const [brick, setBrick] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
   const [cement, setCement] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
 
@@ -28,17 +23,17 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
 
     if(brick.length > 0) {
       if (brick[0].subtotal > 0 && brick.length > 1) {
-        subtotalBrick = brick.reduce((acc, el): any => acc.subtotal + el.subtotal) as unknown as number
+        subtotalBrick = brick.reduce((acc, el): any => acc + el.subtotal, 0) as unknown as number
       } else subtotalBrick = brick[0].subtotal
     }
 
     if (cement.length > 0) {
       if (cement[0].subtotal > 0 && cement.length > 1) {
-        subtotalCement = cement.reduce((acc, el): any => acc.subtotal + el.subtotal) as unknown as number
+        subtotalCement = cement.reduce((acc, el): any => acc + el.subtotal, 0) as unknown as number
       } else subtotalCement = cement[0].subtotal
     }
 
-    if (!brick.find(el => el.subtotal < 0) && !cement.find(el => el.subtotal < 0)) return subtotalBrick + subtotalCement
+    if (!brick.find(el => el.subtotal < 0) || !cement.find(el => el.subtotal < 0)) return subtotalBrick + subtotalCement
     else return -1
   }
 
@@ -52,19 +47,19 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
     if (brick.find(el => el.id === data.id)) {
       let indexBrick = 0
       brick.find((el, index) => el.id === data.id ? indexBrick = index : null)
-      const oldBricks = brick.filter(el => el.id !== data.id)
-      let arrTemp = brick
+      const arrTemp = brick
       arrTemp[indexBrick] = data
-      return setBrick(arrTemp)
+      return setBrick([ ...arrTemp ])
     }
   }
 
-  console.log(brick)
-
   const updateCement = (data: ProductData) => {
     if (cement.find(el => el.id === data.id)) {
-      const oldCement = cement.filter(el => el.id !== data.id)
-      return setCement([ ...oldCement, data ])
+      let indexCement = 0
+      cement.find((el, index) => el.id === data.id ? indexCement = index : null)
+      const arrTemp = cement
+      arrTemp[indexCement] = data
+      return setCement([ ...arrTemp ])
     }
   }
   
@@ -87,6 +82,8 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
   const handleRemoveCement = (id: string) => {
     setCement((currentCement) => currentCement.filter(el => el.id !== id))
   }
+
+  const getData = (): DataForm => ({ total, brick, cement })
 
   return (
     <Box w='100%'>
@@ -158,7 +155,7 @@ export const BillForm: React.FC<Props> = ({ bricks, cements }) => {
             Verifique los datos!
           </Alert>
       }
-      <BillData isValid={isValid} />
+      <BillData data={getData} isValid={isValid} />
     </Box>
   )
 }

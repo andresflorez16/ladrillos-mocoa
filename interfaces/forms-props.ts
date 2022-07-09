@@ -12,3 +12,9 @@ export interface ProductData {
   subtotal: number,
   name: string
 }
+
+export interface DataForm {
+  total: number,
+  brick: ProductData[],
+  cement: ProductData[]
+}
