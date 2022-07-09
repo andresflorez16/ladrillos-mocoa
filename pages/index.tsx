@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { Flex, Spinner } from '@chakra-ui/react'
+import { Box, Spinner } from '@chakra-ui/react'
 import { useUser, USER_STATES } from 'hooks'
 import { LoginPage } from 'components/ui'
 
@@ -14,7 +14,15 @@ const Home: NextPage = () => {
   }, [user])
 
   return (
-    <Flex w='90%' flexDir='row' justifyContent='center' alignItems='center' >
+    <Box 
+      w='80%' 
+      h='83vh'
+      display='flex' 
+      flexDir='row' 
+      justifyContent='center' 
+      alignItems='center' 
+      m='0 auto'
+    >
       {
         user === USER_STATES.NOT_KNOWN &&
           <Spinner color='white' w={100} h={100} thickness='10px'/>
@@ -23,7 +31,7 @@ const Home: NextPage = () => {
         user === USER_STATES.NOT_LOGGED &&
           <LoginPage />
       }
-    </Flex>
+    </Box>
   )
 }
 

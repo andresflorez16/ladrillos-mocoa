@@ -31,7 +31,13 @@ export const LoginPage: React.FC = () => {
 	}
 
   return (
-		<Box display='flex' w={{ base: 'full', md: 'lg' }} flexDir='column' justifyContent='flex-start' alignItems='center'>
+		<Box 
+			display='flex' 
+			w={{ base: 'full', md: 'lg' }} 
+			flexDir='column'
+			justifyContent='center'
+			alignItems='center'
+		>
 			<LoginForm handleSubmit={handleSubmit} handleChange={handleChange} />
 			{
 				msg && 

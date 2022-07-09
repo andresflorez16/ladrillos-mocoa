@@ -98,9 +98,9 @@ export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
         {
           isErrorCantity
             ?
-              <Input border='1px solid red' onChange={onChangeCantity} value={cantity} size='sm' type='number' />
+              <Input _focus={{ background: '#ddd' }} variant='filled' color='black' border='1px solid red' onChange={onChangeCantity} value={cantity} size='sm' type='number' />
             : 
-              <Input onChange={onChangeCantity} value={cantity} size='sm' type='number' />
+            <Input _focus={{ background: '#ddd' }} variant='filled' color='black' onChange={onChangeCantity} value={cantity} size='sm' type='number' />
         }
         </FormControl>
       </Box>

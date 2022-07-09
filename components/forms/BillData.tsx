@@ -89,6 +89,9 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
           {
             checkEmail === 'yes' &&
             <Input 
+              variant='filled'
+              color='black'
+              _focus={{ background: '#ddd' }}
               id='email'
               onChange={handleEmail}
               isRequired

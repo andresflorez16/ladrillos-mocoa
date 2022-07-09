@@ -40,6 +40,16 @@ export const Links: FC = () => {
             Facturar
           </Link>
         </NextLink>
+        <NextLink href='/pendientes'>
+          <Link
+            p={2}
+            color='white'
+            textDecor={ asPath === '/pendientes' ? 'underline' : 'none' }
+            fontWeight={ asPath === '/pendientes' ? 'bold' : 'normal' }
+          >
+            Pendientes
+          </Link>
+        </NextLink>
         <Button
           onClick={handleSignOut}
           size='sm'
@@ -53,11 +63,13 @@ export const Links: FC = () => {
       >
         <Menu isLazy >
           <MenuButton
+            _hover={{ background: '#444' }}
+            _active={{ background: '#444' }}
             as={IconButton}
             icon={<HamburgerIcon />}
             variant='outline'
             aria-label='Options'
-            color='gray.400'
+            color='white'
           />
           <MenuList>
             <NextLink href='/facturar' passHref>
@@ -69,6 +81,17 @@ export const Links: FC = () => {
                 fontWeight={ asPath === '/facturar' ? 'bold' : 'normal' }
               >
                 Facturar
+              </MenuItem>
+            </NextLink>
+            <NextLink href='/pendientes'>
+               <MenuItem 
+                as={Link} 
+                p={2} 
+                color='black' 
+                textDecor={ asPath === '/pendientes' ? 'underline' : 'none' }
+                fontWeight={ asPath === '/pendientes' ? 'bold' : 'normal' }
+              >
+                Pendientes
               </MenuItem>
             </NextLink>
           </MenuList>

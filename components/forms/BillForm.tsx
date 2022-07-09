@@ -86,7 +86,7 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
   const getData = (): DataForm => ({ total, brick, cement })
 
   return (
-    <Box w='100%'>
+    <Box w='100%' >
       <Button rightIcon={<AddIcon />} mr={5} onClick={handleAddBrick}>Ladrillo</Button>
       <Button rightIcon={<AddIcon />} onClick={handleAddCement}>Cemento</Button>
       {
@@ -97,12 +97,12 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
         brick.map((el) => (
           <Box 
             key={el.id} 
-            w={{ base: '100%', xl: '60%' }} 
+            w={{ base: '100%', xl: '70%' }} 
             m='0 auto' 
             pb={3}
             borderBottom='1px solid white' 
             display='flex' 
-            mt={5} 
+            mt={2} 
             justifyContent='center'
             alignItems='center'
           >
@@ -121,12 +121,12 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
         cement.map((el) => (
           <Box 
             key={el.id} 
-            w={{ base: '100%', xl: '60%' }} 
+            w={{ base: '100%', xl: '70%' }} 
             m='0 auto'
             pb={3}
             borderBottom='1px solid white'
             display='flex'
-            mt={5} 
+            mt={2} 
             justifyContent='center'
             alignItems='center'
           >

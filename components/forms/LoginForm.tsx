@@ -46,7 +46,9 @@ export const LoginForm: React.FC<FormProps> = ({ handleSubmit, handleChange }) =
           type='email'
           size='lg'
           placeholder='Email' 
-          color='#fff' 
+          color='black' 
+          variant='filled'
+          _focus={{ background: '#ddd' }}
           p={5}
           borderRadius="10px"
         />
@@ -63,12 +65,14 @@ export const LoginForm: React.FC<FormProps> = ({ handleSubmit, handleChange }) =
             type={ show ? 'text' : 'password' }
             size='lg'
             placeholder='Contraseña' 
-            color='#fff' 
+            color='black' 
+            variant='filled'
+            _focus={{ background: '#ddd' }}
             p={5}
             borderRadius="10px"
           />
           <InputRightElement w='4.5rem' mt={2.5}>
-            <IconButton size='sm' aria-label='Show password' icon={ show ? <ViewOffIcon /> : <ViewIcon /> } onClick={handleShow} />
+            <IconButton size='sm' bg='#0987AA99' _hover={{ background: '#0987AA66' }} aria-label='Show password' icon={ show ? <ViewOffIcon /> : <ViewIcon /> } onClick={handleShow} />
           </InputRightElement>
         </InputGroup>
         <Button

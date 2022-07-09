@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react'
 import Head from 'next/head'
 import { Box, Flex } from '@chakra-ui/react'
 import { Navbar } from 'components/navbar'
+import { Footer } from 'components/ui'
 import style from './stylesLayout.module.css'
 
 interface Props {
@@ -17,15 +18,12 @@ export const MainLayout: FC<Props> = ({ children }) => {
 				<meta name='description' content="Ladrillos Mocoa Website" />
 			</Head>
       <Navbar />
-      <Flex
-        w='100%' 
-        display='flex' 
-        justifyContent='center' 
-        h='calc(98vh - 100px)'
+      <Box
         mt='70px'
       >
         {children}
-      </Flex>
+        <Footer />
+      </Box>
     </Box>
   )
 }

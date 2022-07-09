@@ -8,6 +8,7 @@ const HomePage: NextPage = () => {
   return (
 		<Box
 			w='100%'
+			h='83vh'
 		>
 		</Box>
 	)
