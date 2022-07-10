@@ -22,7 +22,7 @@ const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
     >
       {
         user === USER_STATES.NOT_KNOWN &&
-          <Box w='100%' h='60vh' display='flex' justifyContent='center' mt={100} >
+          <Box w='100%' h='65vh' display='flex' justifyContent='center' mt={100} >
             <Spinner color='white' w={100} h={100} thickness='10px'/>
           </Box>
       }

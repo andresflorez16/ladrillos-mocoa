@@ -25,6 +25,7 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
   const [checkEmail, setCheckEmail] = useState('not')
   const [checkPay, setCheckPay] = useState('cash')
   const [checkShipping, setCheckShipping] = useState('pending')
+  const [billNumber, setBillNumber] = useState('0000')
 
   const handleForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -58,6 +59,13 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
 
   const emailErr = inputEmail === ''
 
+  const handleBillNumber = (e: React.ChangeEvent) => {
+    const { value } = e.target as unknown as { value: string }
+    if (value.length > 4) {
+      setBillNumber(value.slice(0, 4))
+    } else setBillNumber(value)
+  }
+
   return (
     <FormControl
       onSubmit={handleForm}
@@ -72,16 +80,18 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
     >
       <Box w={{ base: 'full', md: '40%' }}>
         <FormLabel>Número de factura:</FormLabel>
-        <Input
-          placeholder='Número de factura'
+        <Input 
+          name='number'
+          size='sm'
+          w='50%'
           color='black'
           variant='filled'
           _focus={{ background: '#ddd' }}
-          id='number'
-          name='number'
-          size='sm'
           type='number'
-          maxLength={4}
+          placeholder='Número de factura'
+          onChange={handleBillNumber}
+          value={billNumber}
+          isRequired
         />
         <FormLabel>Tipo de pago:</FormLabel>
         <RadioGroup size='lg' defaultValue={checkPay} onChange={setCheckPay}>
@@ -91,7 +101,7 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
         <FormLabel>Envio:</FormLabel>
         <RadioGroup size='lg' defaultValue={checkShipping} onChange={setCheckShipping}>
           <Radio mr={5} value='delivered'>Entregado</Radio>
-          <Radio value='pending'>Pendiente de enío</Radio>
+          <Radio value='pending'>Pendiente de envío</Radio>
         </RadioGroup>
         <RadioGroup size='lg' defaultValue={checkEmail} onChange={handleChangeInput}>
           <FormLabel mt={5}>Correo de facturación:</FormLabel>

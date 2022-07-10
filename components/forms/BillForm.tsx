@@ -12,19 +12,28 @@ import { generate } from 'shortid'
 import { InputBill } from './InputBill'
 import { BillData } from './BillData'
 import { ProductData, DataForm, Inventory } from 'interfaces'
+import { otherData } from 'utils'
 
 export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
   const [brick, setBrick] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
   const [cement, setCement] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
+  const [otherInput, setOtherInput] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: 'other' }])
 
   const getTotal = (): any => {
     let subtotalBrick: number = 0
     let subtotalCement: number = 0
+    let subtotalOther: number = 0
 
     if(brick.length > 0) {
       if (brick[0].subtotal > 0 && brick.length > 1) {
         subtotalBrick = brick.reduce((acc, el): any => acc + el.subtotal, 0) as unknown as number
       } else subtotalBrick = brick[0].subtotal
+    }
+
+    if(otherInput.length > 0) {
+      if (otherInput[0].subtotal > 0 && otherInput.length > 1) {
+        subtotalOther = otherInput.reduce((acc, el): any => acc + el.subtotal, 0) as unknown as number
+      } else subtotalOther = otherInput[0].subtotal
     }
 
     if (cement.length > 0) {
@@ -33,7 +42,7 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
       } else subtotalCement = cement[0].subtotal
     }
 
-    if (!brick.find(el => el.subtotal < 0) || !cement.find(el => el.subtotal < 0)) return subtotalBrick + subtotalCement
+    if (!brick.find(el => el.subtotal < 0) || !cement.find(el => el.subtotal < 0) || !otherInput.find(el => el.subtotal < 0)) return subtotalBrick + subtotalCement + subtotalOther
     else return -1
   }
 
@@ -53,6 +62,16 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
     }
   }
 
+  const updateOther = (data: ProductData) => {
+    if (otherInput.find(el => el.id === data.id)) {
+      let indexOther = 0
+      otherInput.find((el, index) => el.id === data.id ? indexOther = index : null)
+      const arrTemp = otherInput
+      arrTemp[indexOther] = data
+      return setOtherInput([ ...arrTemp ])
+    }
+  }
+
   const updateCement = (data: ProductData) => {
     if (cement.find(el => el.id === data.id)) {
       let indexCement = 0
@@ -65,7 +84,7 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
   
   useEffect(() => {
     setTotal(getTotal())
-  }, [brick, cement])
+  }, [brick, cement, otherInput])
 
   const handleAddBrick = () => {
     return setBrick(currentBrick => [ ...currentBrick, { id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' } ])
@@ -75,8 +94,16 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
     setBrick((currentBrick) => currentBrick.filter(el => el.id !== id))
   }
 
+  const handleRemoveOther = (id: string) => {
+    setOtherInput((currentOther) => currentOther.filter(el => el.id !== id))
+  }
+
   const handleAddCement = () => {
     return setCement(currentCement => [ ...currentCement, { id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' } ])
+  }
+
+  const handleAddOther = () => {
+    return setOtherInput(currentOther => [ ...currentOther, { id: generate(), cantity: 1, price: 0, subtotal: 0, name: 'other' } ])
   }
 
   const handleRemoveCement = (id: string) => {
@@ -87,10 +114,19 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
 
   return (
     <Box w='100%' >
-      <Button rightIcon={<AddIcon />} mr={5} onClick={handleAddBrick}>Ladrillo</Button>
-      <Button rightIcon={<AddIcon />} onClick={handleAddCement}>Cemento</Button>
+      <Box 
+        w='100%'
+        display='flex'
+        alignItems='center'
+        gap={2}
+        flexWrap='wrap'
+      >
+        <Button rightIcon={<AddIcon />}  onClick={handleAddBrick}>Ladrillo</Button>
+        <Button rightIcon={<AddIcon />}  onClick={handleAddCement}>Cemento</Button>
+        <Button rightIcon={<AddIcon />}  onClick={handleAddOther}>Otros</Button>
+      </Box>
       {
-        brick.length === 0 && cement.length === 0 &&
+        brick.length === 0 && cement.length === 0 && otherInput.length === 0 &&
           <Text color='white' textAlign='center' mt={10}>No se ha seleccionado ningún producto</Text>
       }
       {
@@ -138,6 +174,30 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
             />
           </FormControl>
             <IconButton icon={<DeleteIcon />} aria-label='Delete product' onClick={e => handleRemoveCement(el.id)} color='red'/>
+          </Box>
+        ))
+      }
+      {
+        otherInput.map(el => (
+          <Box 
+            key={el.id} 
+            w={{ base: '100%', xl: '70%' }} 
+            m='0 auto'
+            pb={3}
+            borderBottom='1px solid white'
+            display='flex'
+            mt={2} 
+            justifyContent='center'
+            alignItems='center'
+          >
+          <FormControl as='form' >
+            <InputBill 
+              setData={updateOther}
+              id={el.id}
+              product={otherData} 
+            />
+          </FormControl>
+            <IconButton icon={<DeleteIcon />} aria-label='Delete product' onClick={e => handleRemoveOther(el.id)} color='red'/>
           </Box>
         ))
       }
