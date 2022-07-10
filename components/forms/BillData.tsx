@@ -24,7 +24,7 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
 
   const [checkEmail, setCheckEmail] = useState('not')
   const [checkPay, setCheckPay] = useState('cash')
-  const [checkShipping, setCheckShipping] = useState('not')
+  const [checkShipping, setCheckShipping] = useState('pending')
 
   const handleForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -71,6 +71,18 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
       flexWrap='wrap'
     >
       <Box w={{ base: 'full', md: '40%' }}>
+        <FormLabel>Número de factura:</FormLabel>
+        <Input
+          placeholder='Número de factura'
+          color='black'
+          variant='filled'
+          _focus={{ background: '#ddd' }}
+          id='number'
+          name='number'
+          size='sm'
+          type='number'
+          maxLength={4}
+        />
         <FormLabel>Tipo de pago:</FormLabel>
         <RadioGroup size='lg' defaultValue={checkPay} onChange={setCheckPay}>
           <Radio mr={5} value='cash'>De contado</Radio>
@@ -78,9 +90,8 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
         </RadioGroup>
         <FormLabel>Envio:</FormLabel>
         <RadioGroup size='lg' defaultValue={checkShipping} onChange={setCheckShipping}>
-          <Radio mr={5} value='not'>No</Radio>
-          <Radio mr={5} value='yes'>Sí</Radio>
-          <Radio value='sent'>Enviado</Radio>
+          <Radio mr={5} value='delivered'>Entregado</Radio>
+          <Radio value='pending'>Pendiente de enío</Radio>
         </RadioGroup>
         <RadioGroup size='lg' defaultValue={checkEmail} onChange={handleChangeInput}>
           <FormLabel mt={5}>Correo de facturación:</FormLabel>
