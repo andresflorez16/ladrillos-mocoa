@@ -14,6 +14,7 @@ import {
 import { WarningIcon } from '@chakra-ui/icons'
 import { addBill } from '../../firebase'
 import { DataForm, DataBillForm } from 'interfaces'
+import { api_rest } from 'api-queries'
 
 interface Props {
   isValid: boolean,
@@ -146,7 +147,7 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
         display='flex'
         justifyContent='center'
       >
-        <Button type='submit' isDisabled={isValid || emailErr} mr={5} color='black'>Confirmar</Button>
+        <Button type='submit' isDisabled={isValid || emailErr || billNumber === '' || billNumber.length < 4} mr={5} color='black'>Confirmar</Button>
         <NextLink href='/home'>
           <Link>
             <Button type='submit' color='red'>Cancelar</Button>

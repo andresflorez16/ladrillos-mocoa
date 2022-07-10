@@ -16,5 +16,6 @@ export interface ProductData {
 export interface DataForm {
   total: number,
   brick: ProductData[],
-  cement: ProductData[]
+  cement: ProductData[],
+  other: ProductData[]
 }

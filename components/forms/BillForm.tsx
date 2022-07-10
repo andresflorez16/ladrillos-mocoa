@@ -110,7 +110,7 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
     setCement((currentCement) => currentCement.filter(el => el.id !== id))
   }
 
-  const getData = (): DataForm => ({ total, brick, cement })
+  const getData = (): DataForm => ({ total, brick, cement, other: otherInput })
 
   return (
     <Box w='100%' >
