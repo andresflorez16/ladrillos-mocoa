@@ -5,6 +5,7 @@ import { useUser, USER_STATES } from 'hooks'
 import { getInventory } from '../../firebase'
 import { BillForm } from 'components/forms'
 import { Inventory } from 'interfaces'
+import { api_rest } from 'api-queries'
 
 const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
   const user = useUser()
@@ -12,6 +13,7 @@ const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
   useEffect(() => {
     user
   }, [user])
+
   return (
     <Box
       w='80%'
@@ -41,6 +43,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const { brickData, cementData } = await getInventory()
   const bricks = brickData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
   const cements = cementData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+  api_rest.get('/api/mailer').then(res => console.log(res))
 
   return { props: { bricks, cements } }
 }
