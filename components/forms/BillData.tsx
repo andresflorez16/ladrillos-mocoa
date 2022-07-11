@@ -14,7 +14,6 @@ import {
 import { WarningIcon } from '@chakra-ui/icons'
 import { addBill } from '../../firebase'
 import { DataForm, DataBillForm } from 'interfaces'
-import { api_rest } from 'api-queries'
 
 interface Props {
   isValid: boolean,
@@ -31,14 +30,14 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
   const handleForm = (e: React.FormEvent) => {
     e.preventDefault()
     const { target }: any = e
-    let dataBill: DataBillForm = { ...data(), payType: checkPay, shipping: checkShipping, isEmail: checkEmail, emailBill: '' }
+    let dataBill: DataBillForm = { ...data(), payType: checkPay, shipping: checkShipping, isEmail: checkEmail, emailBill: '', billNumber }
     if (checkEmail === 'yes') {
       const { email } = Object.fromEntries(new FormData(target)) as unknown as { email: string }
       dataBill = { ...dataBill, emailBill: email }
     }
     addBill(dataBill)
-    .then(() => console.log('Added'))
-    .catch(err => console.log('Error adding bill', err))
+      .then(() => console.log('added'))
+      .catch(err => console.log('Error adding bill', err))
   }
 
   const [inputEmail, setInputEmail] = useState(checkEmail === 'yes' ? '' : null)
@@ -83,13 +82,10 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
         w='100%'
         display='flex'
         alignItems='flex-start'
-        gap={5}
+        gap={{ base: '2', md: '10' }}
         flexWrap='wrap'
       >
-        <Box 
-          borderRight={{ base: 'none', md: '1px solid #fff' }} 
-          pr={{ base: '0', md: '5px' }}
-        >
+        <Box>
           <FormLabel>Número de factura:</FormLabel>
           <Input 
             name='number'
@@ -104,26 +100,22 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
             isRequired
           />
         </Box>
-        <Box
-          borderRight={{ base: 'none', md: '1px solid #fff' }} 
-          pr={{ base: '0', md: '5px' }}
-        >
+        <Box>
           <FormLabel>Tipo de pago:</FormLabel>
-          <RadioGroup size='lg' defaultValue={checkPay} onChange={setCheckPay}>
+          <RadioGroup size='md' defaultValue={checkPay} onChange={setCheckPay}>
             <Radio mr={5} value='cash'>De contado</Radio>
             <Radio value='credit'>Crédito</Radio>
           </RadioGroup>
         </Box>
         <Box>
           <FormLabel>Envio:</FormLabel>
-          <RadioGroup size='lg' defaultValue={checkShipping} onChange={setCheckShipping}>
+          <RadioGroup size='md' defaultValue={checkShipping} onChange={setCheckShipping}>
             <Radio mr={5} value='delivered'>Entregado</Radio>
             <Radio value='pending'>Pendiente de envío</Radio>
           </RadioGroup>
         </Box>
-        
       </Box>
-      <RadioGroup size='lg' defaultValue={checkEmail} onChange={handleChangeInput}>
+      <RadioGroup size='md' defaultValue={checkEmail} onChange={handleChangeInput}>
           <FormLabel mt={5}>Correo de facturación:</FormLabel>
           <Radio mr={5} value='not'>No</Radio>
           <Radio mb={5} value='yes'>Sí</Radio>

@@ -6,10 +6,10 @@ const Pendientes: NextPage = () => {
   const user = useUser() 
 
   return (
-    <Box w='90%' h='83vh'>
+    <Box w='90%' m='0 auto' h='83vh'>
       {
         user === USER_STATES.NOT_KNOWN &&
-          <Box display='flex' justifyContent='center' alignItems='center' h='100%'>
+          <Box display='flex' w='100%' justifyContent='center' alignItems='center' h='100%'>
             <Spinner color='white' w={100} h={100} thickness='10px'/>
           </Box>
       }

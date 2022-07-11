@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export interface Data {
-	email: string
+	msg: string
 }
 
 export interface ApiProps {

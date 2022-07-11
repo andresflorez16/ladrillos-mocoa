@@ -8,10 +8,10 @@ import {
   Text
 } from '@chakra-ui/react'
 import { NumberInputBill } from './NumberInputBill'
-import { ProductData } from 'interfaces'
+import { ProductData, Product } from 'interfaces'
 
 interface Props {
-  product: ProductData[] | any,
+  product: Product[],
   setData: (data: ProductData) => void,
   id: string
 }

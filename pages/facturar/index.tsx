@@ -5,7 +5,6 @@ import { useUser, USER_STATES } from 'hooks'
 import { getInventory } from '../../firebase'
 import { BillForm } from 'components/forms'
 import { Inventory } from 'interfaces'
-import { api_rest } from 'api-queries'
 
 const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
   const user = useUser()
