@@ -43,7 +43,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const { brickData, cementData } = await getInventory()
   const bricks = brickData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
   const cements = cementData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-  api_rest.get('/api/mailer').then(res => console.log(res))
 
   return { props: { bricks, cements } }
 }

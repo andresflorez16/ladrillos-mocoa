@@ -79,32 +79,51 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
       alignItems='center'
       flexWrap='wrap'
     >
-      <Box w={{ base: 'full', md: '40%' }}>
-        <FormLabel>Número de factura:</FormLabel>
-        <Input 
-          name='number'
-          size='sm'
-          w='50%'
-          color='black'
-          variant='filled'
-          _focus={{ background: '#ddd' }}
-          type='number'
-          placeholder='Número de factura'
-          onChange={handleBillNumber}
-          value={billNumber}
-          isRequired
-        />
-        <FormLabel>Tipo de pago:</FormLabel>
-        <RadioGroup size='lg' defaultValue={checkPay} onChange={setCheckPay}>
-          <Radio mr={5} value='cash'>De contado</Radio>
-          <Radio value='credit'>Crédito</Radio>
-        </RadioGroup>
-        <FormLabel>Envio:</FormLabel>
-        <RadioGroup size='lg' defaultValue={checkShipping} onChange={setCheckShipping}>
-          <Radio mr={5} value='delivered'>Entregado</Radio>
-          <Radio value='pending'>Pendiente de envío</Radio>
-        </RadioGroup>
-        <RadioGroup size='lg' defaultValue={checkEmail} onChange={handleChangeInput}>
+      <Box 
+        w='100%'
+        display='flex'
+        alignItems='flex-start'
+        gap={5}
+        flexWrap='wrap'
+      >
+        <Box 
+          borderRight={{ base: 'none', md: '1px solid #fff' }} 
+          pr={{ base: '0', md: '5px' }}
+        >
+          <FormLabel>Número de factura:</FormLabel>
+          <Input 
+            name='number'
+            size='sm'
+            color='black'
+            variant='filled'
+            _focus={{ background: '#ddd' }}
+            type='number'
+            placeholder='Número de factura'
+            onChange={handleBillNumber}
+            value={billNumber}
+            isRequired
+          />
+        </Box>
+        <Box
+          borderRight={{ base: 'none', md: '1px solid #fff' }} 
+          pr={{ base: '0', md: '5px' }}
+        >
+          <FormLabel>Tipo de pago:</FormLabel>
+          <RadioGroup size='lg' defaultValue={checkPay} onChange={setCheckPay}>
+            <Radio mr={5} value='cash'>De contado</Radio>
+            <Radio value='credit'>Crédito</Radio>
+          </RadioGroup>
+        </Box>
+        <Box>
+          <FormLabel>Envio:</FormLabel>
+          <RadioGroup size='lg' defaultValue={checkShipping} onChange={setCheckShipping}>
+            <Radio mr={5} value='delivered'>Entregado</Radio>
+            <Radio value='pending'>Pendiente de envío</Radio>
+          </RadioGroup>
+        </Box>
+        
+      </Box>
+      <RadioGroup size='lg' defaultValue={checkEmail} onChange={handleChangeInput}>
           <FormLabel mt={5}>Correo de facturación:</FormLabel>
           <Radio mr={5} value='not'>No</Radio>
           <Radio mb={5} value='yes'>Sí</Radio>
@@ -140,7 +159,6 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
               </Alert>
           }
         </RadioGroup>
-      </Box>
       <Box 
         w={{ base: 'full', md: 'auto' }} 
         mt={{ base: '20px', md: '0' }}
