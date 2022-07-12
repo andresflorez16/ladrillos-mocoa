@@ -29,3 +29,8 @@ export interface DataBillForm {
 	emailBill: string,
 	billNumber: string
 }
+
+export interface PendingData {
+	date: string;
+	data: DataBillForm;
+}
