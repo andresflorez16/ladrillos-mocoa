@@ -14,8 +14,8 @@ export interface CementProps {
 }
 
 export interface Inventory {
-	bricks: BrickProps,
-	cements: CementProps
+	bricks: Product[],
+	cements: Product[]
 }
 
 export interface DataBillForm {
@@ -26,5 +26,6 @@ export interface DataBillForm {
 	payType: string,
 	shipping: string,
 	isEmail: string,
-	emailBill: string
+	emailBill: string,
+	billNumber: string
 }

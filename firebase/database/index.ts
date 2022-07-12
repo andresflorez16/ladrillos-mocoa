@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore'
 import { app } from '../client'
 import { DataBillForm } from 'interfaces'
+import { api } from 'api-queries'
 
 const db = getFirestore(app)
 
@@ -42,5 +43,9 @@ const getDate = async () => {
 export const addBill = async (data: DataBillForm) => {
   const [ date ] = await getDate()
   const ref = doc(db, 'ventas', date.toString(), 'mes', Date.now().toString())
+  if (data.emailBill.length > 0) {
+    const res = await api.post('/api/post/sendMail', { email: data.emailBill })
+    console.log(res)
+  }
   return await setDoc(ref, data)
 }
