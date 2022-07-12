@@ -12,7 +12,8 @@ const getPending = async (req: NextApiRequest, res: NextApiResponse<PendingData[
       const sales = await refSales.doc(elId).collection('mes').get()
       return sales.docs.map(el => ({ date: el.id, data: el.data() }))
     })
-    const pending = await Promise.all(data)
+    const dataRaw = await Promise.all(data)
+    const pending = dataRaw.reduce((acc, el) => acc.concat(el), [])
 
     if (pending.length > 0) {
       res.status(200).json(pending)
