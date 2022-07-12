@@ -6,6 +6,7 @@ import {
   setDoc,
   query,
   where,
+  getDoc,
   getDocs
 } from 'firebase/firestore'
 import { app } from '../client'
@@ -43,4 +44,3 @@ export const addBill = async (data: DataBillForm) => {
   const ref = doc(db, 'ventas', date.toString(), 'mes', Date.now().toString())
   return await setDoc(ref, data)
 }
-
