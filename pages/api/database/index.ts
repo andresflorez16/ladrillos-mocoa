@@ -1,9 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import admin from 'firebase-admin'
+import { getFirestore } from 'firebase-admin/firestore'
 
-/*const getData = async (req: NextApiRequest, res: NextApiResponse<any>) => {*/
-  /*const data = await db.collection('ventas').get()*/
-  /*let collectionData = data.docs.map(doc => doc.id)*/
-  /*res.status(200).json(collectionData)*/
-/*}*/
+if(!admin.apps.length){
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.ADMIN_PROJECT_ID,
+      privateKey: process.env.ADMIN_KEY,
+      clientEmail: process.env.ADMIN_EMAIL_CLIENT
+    }),
+  })
+}
 
-/*export default getData*/
+export default getFirestore()
