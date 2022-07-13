@@ -24,6 +24,7 @@ export interface DataBillForm {
 	cement: ProductData[],
 	other?: ProductData[],
 	payType: string,
+	pay: string,
 	shipping: string,
 	isEmail: string,
 	emailBill: string,

@@ -10,7 +10,8 @@ import { formatPendingData } from '../../firebase'
 
 const Pendientes: NextPage = () => {
   const [loading, setLoading] = useState(false)
-  const [isData, setIsData] = useState(false)
+  const [isEmpty, setIsEmpty] = useState(false)
+  const [pending, setPending] = useState<PendingData[]>([])
   const user = useUser() 
 
   useEffect(() => {
@@ -20,10 +21,10 @@ const Pendientes: NextPage = () => {
       .then(({ data }) => {
         if (apiSubscribe) {
           setLoading(!loading)
-          if (data.msg) setIsData(true)
+          if (data.msg) setIsEmpty(true)
           if (data.length > 0) {
-            setIsData(false)
-            formatPendingData(data)
+            setIsEmpty(false)
+            setPending(formatPendingData(data))
           }  
         }
       })
@@ -39,7 +40,7 @@ const Pendientes: NextPage = () => {
         loading && <Loader />
       }
       {
-        isData &&
+        isEmpty ?
           <Box 
             display='flex'
             w='100%' 
@@ -51,6 +52,10 @@ const Pendientes: NextPage = () => {
             <InfoIcon boxSize={10} mr={5} />
             No hay facturas pendientes
           </Box>
+          :
+            pending.map(el => (
+              <h1 key={el.date}>Factura: #{el.data.billNumber}</h1>
+            ))
       }
     </Box>
   )

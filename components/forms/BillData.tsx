@@ -26,6 +26,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
 
   const [checkEmail, setCheckEmail] = useState('not')
   const [checkPay, setCheckPay] = useState('cash')
+  const [inputPay, setInputPay] = useState('')
   const [checkShipping, setCheckShipping] = useState('pending')
   const [billNumber, setBillNumber] = useState('0000')
   const [loading, setLoading] = useState(false)
@@ -34,7 +35,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
     e.preventDefault()
     setLoading(true)
     const { target }: any = e
-    let dataBill: DataBillForm = { ...data(), payType: checkPay, shipping: checkShipping, isEmail: checkEmail, emailBill: '', billNumber }
+    let dataBill: DataBillForm = { ...data(), payType: checkPay, shipping: checkShipping, isEmail: checkEmail, emailBill: '', billNumber, pay: inputPay }
     if (checkEmail === 'yes') {
       const { email } = Object.fromEntries(new FormData(target)) as unknown as { email: string }
       dataBill = { ...dataBill, emailBill: email }
@@ -45,6 +46,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
         setCheckPay('cash')
         setCheckShipping('pending')
         setBillNumber('0000')
+        setInputPay('')
         resetData()
         setLoading(false)
         console.log('added')
@@ -77,6 +79,14 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
       setBillNumber(value.slice(0, 4))
     } else setBillNumber(value)
   }
+
+  const handleInputPay = (e: React.ChangeEvent) => {
+    e.preventDefault()
+    const { value } = e.target as unknown as { value: string }
+    setInputPay(value)
+  }
+
+  const isError = parseFloat(inputPay) < 0
 
   return (
     <FormControl
@@ -120,7 +130,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
             <Radio value='credit'>Crédito</Radio>
             {
               checkPay === 'credit' &&
-                <NumberInputBill type='pay' />
+                <NumberInputBill type='pay' isError={isError} handleChangeValue={handleInputPay}/>
             }
           </RadioGroup>
         </Box>

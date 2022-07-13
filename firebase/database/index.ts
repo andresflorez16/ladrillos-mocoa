@@ -51,8 +51,7 @@ export const addBill = async (data: DataBillForm) => {
 }
 
 export const formatPendingData = (data: PendingData[]) => {
-  const pending = data.filter(el => {
+  return data.filter(el => {
     return (el.data.payType === 'credit' || el.data.shipping === 'pending')
   })
-  console.log(pending)
 }
