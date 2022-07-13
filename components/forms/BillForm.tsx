@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { 
   Box,
-  FormControl,
   Button,
   IconButton,
   Text,
@@ -90,6 +89,12 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
     return setBrick(currentBrick => [ ...currentBrick, { id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' } ])
   }
 
+  const resetData = () => {
+    setBrick([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
+    setCement([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
+    setOtherInput([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: 'other' }])
+  }
+
   const handleRemoveBrick = (id: string) => {
     setBrick((currentBrick) => currentBrick.filter(el => el.id !== id))
   }
@@ -142,13 +147,11 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
             justifyContent='center'
             alignItems='center'
           >
-          <FormControl as='form' >
             <InputBill 
               setData={updateBrick}
               id={el.id}
               product={bricks} 
             />
-          </FormControl>
             <IconButton icon={<DeleteIcon />} aria-label='Delete product' onClick={e => handleRemoveBrick(el.id)} color='red'/>
           </Box>
         ))
@@ -166,13 +169,11 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
             justifyContent='center'
             alignItems='center'
           >
-          <FormControl as='form' >
             <InputBill 
               setData={updateCement}
               id={el.id}
               product={cements} 
             />
-          </FormControl>
             <IconButton icon={<DeleteIcon />} aria-label='Delete product' onClick={e => handleRemoveCement(el.id)} color='red'/>
           </Box>
         ))
@@ -190,13 +191,11 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
             justifyContent='center'
             alignItems='center'
           >
-          <FormControl as='form' >
             <InputBill 
               setData={updateOther}
               id={el.id}
               product={otherData} 
             />
-          </FormControl>
             <IconButton icon={<DeleteIcon />} aria-label='Delete product' onClick={e => handleRemoveOther(el.id)} color='red'/>
           </Box>
         ))
@@ -215,7 +214,7 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
             Verifique los datos!
           </Alert>
       }
-      <BillData data={getData} isValid={isValid} />
+      <BillData data={getData} isValid={isValid} resetData={resetData} />
     </Box>
   )
 }

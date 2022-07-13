@@ -10,7 +10,7 @@ import {
   getDocs
 } from 'firebase/firestore'
 import { app } from '../client'
-import { DataBillForm } from 'interfaces'
+import { DataBillForm, PendingData } from 'interfaces'
 import { api } from 'api-queries'
 
 const db = getFirestore(app)
@@ -48,4 +48,11 @@ export const addBill = async (data: DataBillForm) => {
     console.log(res)
   }
   return await setDoc(ref, data)
+}
+
+export const formatPendingData = (data: PendingData[]) => {
+  const pending = data.filter(el => {
+    return (el.data.payType === 'credit' || el.data.shipping === 'pending')
+  })
+  console.log(pending)
 }

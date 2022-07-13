@@ -17,12 +17,12 @@ const getPending = async (req: NextApiRequest, res: NextApiResponse<PendingData[
 
     if (pending.length > 0) {
       res.status(200).json(pending)
-    } else res.status(200).json({ msg: 'Empty collection' })
+    } else res.status(200).json({ msg: 'Empty collection', code: 204 })
 
   }
   catch (err) {
     console.log('Error getting pending')
-    res.status(500).json({ msg: err })
+    res.status(500).json({ msg: err, code: 500 })
   }
 }
 

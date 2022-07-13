@@ -34,3 +34,8 @@ export interface PendingData {
 	date: string;
 	data: DataBillForm;
 }
+
+export interface NoData {
+	msg: string,
+	code: number
+}

@@ -13,7 +13,7 @@ import { ProductData, Product } from 'interfaces'
 interface Props {
   product: Product[],
   setData: (data: ProductData) => void,
-  id: string
+  id: string,
 }
 
 export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
@@ -110,7 +110,7 @@ export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
         w={{ base: '80%', md: '20%' }}
       >
         <FormLabel>Precio x unidad:</FormLabel>
-        <NumberInputBill isError={isErrorValue} handleChangeValue={handleChangeValue} />
+        <NumberInputBill type='price' isError={isErrorValue} handleChangeValue={handleChangeValue} />
       </Box>
       <Box
         color='white'

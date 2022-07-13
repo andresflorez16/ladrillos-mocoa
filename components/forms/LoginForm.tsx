@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { 
-  Box, 
   Text, 
   FormControl, 
   FormLabel, 
   InputGroup, 
   InputRightElement, 
   Input, 
-  FormErrorMessage, 
   Button, 
   IconButton 
 } from '@chakra-ui/react'

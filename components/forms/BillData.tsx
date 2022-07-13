@@ -14,21 +14,25 @@ import {
 import { WarningIcon } from '@chakra-ui/icons'
 import { addBill } from '../../firebase'
 import { DataForm, DataBillForm } from 'interfaces'
+import { NumberInputBill } from './NumberInputBill'
 
 interface Props {
   isValid: boolean,
   data: () => DataForm,
+  resetData: () => React.SetStateAction<any>
 }
 
-export const BillData: React.FC<Props> = ({ isValid, data }) => {
+export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
 
   const [checkEmail, setCheckEmail] = useState('not')
   const [checkPay, setCheckPay] = useState('cash')
   const [checkShipping, setCheckShipping] = useState('pending')
   const [billNumber, setBillNumber] = useState('0000')
+  const [loading, setLoading] = useState(false)
 
   const handleForm = (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     const { target }: any = e
     let dataBill: DataBillForm = { ...data(), payType: checkPay, shipping: checkShipping, isEmail: checkEmail, emailBill: '', billNumber }
     if (checkEmail === 'yes') {
@@ -36,7 +40,15 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
       dataBill = { ...dataBill, emailBill: email }
     }
     addBill(dataBill)
-      .then(() => console.log('added'))
+      .then(() => {
+        setCheckEmail('not')
+        setCheckPay('cash')
+        setCheckShipping('pending')
+        setBillNumber('0000')
+        resetData()
+        setLoading(false)
+        console.log('added')
+      })
       .catch(err => console.log('Error adding bill', err))
   }
 
@@ -88,6 +100,7 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
         <Box>
           <FormLabel>Número de factura:</FormLabel>
           <Input 
+            w={{ base: '70%', md: 'auto' }}
             name='number'
             size='sm'
             color='black'
@@ -102,20 +115,24 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
         </Box>
         <Box>
           <FormLabel>Tipo de pago:</FormLabel>
-          <RadioGroup size='md' defaultValue={checkPay} onChange={setCheckPay}>
+          <RadioGroup size='md' defaultValue={checkPay} value={checkPay} onChange={setCheckPay}>
             <Radio mr={5} value='cash'>De contado</Radio>
             <Radio value='credit'>Crédito</Radio>
+            {
+              checkPay === 'credit' &&
+                <NumberInputBill type='pay' />
+            }
           </RadioGroup>
         </Box>
         <Box>
           <FormLabel>Envio:</FormLabel>
-          <RadioGroup size='md' defaultValue={checkShipping} onChange={setCheckShipping}>
+          <RadioGroup size='md' defaultValue={checkShipping} value={checkShipping} onChange={setCheckShipping}>
             <Radio mr={5} value='delivered'>Entregado</Radio>
             <Radio value='pending'>Pendiente de envío</Radio>
           </RadioGroup>
         </Box>
       </Box>
-      <RadioGroup size='md' defaultValue={checkEmail} onChange={handleChangeInput}>
+      <RadioGroup size='md' defaultValue={checkEmail} value={checkEmail} onChange={handleChangeInput}>
           <FormLabel mt={5}>Correo de facturación:</FormLabel>
           <Radio mr={5} value='not'>No</Radio>
           <Radio mb={5} value='yes'>Sí</Radio>
@@ -130,10 +147,10 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
               isRequired
               name='email'
               position={{ base: 'static', md: 'absolute' }}
-              w={{ base: '100%', md: '40%' }}
+              w={{ base: '100%', md: '30%' }}
               ml={5}
               type='email'
-              size='lg'
+              size='md'
               placeholder='Email de facturación'
             />
           }
@@ -157,7 +174,7 @@ export const BillData: React.FC<Props> = ({ isValid, data }) => {
         display='flex'
         justifyContent='center'
       >
-        <Button type='submit' isDisabled={isValid || emailErr || billNumber === '' || billNumber.length < 4} mr={5} color='black'>Confirmar</Button>
+        <Button type='submit' isDisabled={isValid || emailErr || billNumber === '' || billNumber.length < 4 || loading} mr={5} color='black'>Confirmar</Button>
         <NextLink href='/home'>
           <Link>
             <Button type='submit' color='red'>Cancelar</Button>
