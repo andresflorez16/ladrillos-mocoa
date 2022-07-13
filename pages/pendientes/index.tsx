@@ -5,7 +5,7 @@ import { InfoIcon } from '@chakra-ui/icons'
 import { useUser, USER_STATES } from 'hooks'
 import { api } from 'api-queries'
 import { PendingData, NoData } from 'interfaces'
-import { Loader } from 'components/ui'
+import { Loader, PendingCard } from 'components/ui'
 import { formatPendingData } from '../../firebase'
 
 const Pendientes: NextPage = () => {
@@ -32,7 +32,7 @@ const Pendientes: NextPage = () => {
   }, [user])
 
   return (
-    <Box w='90%' m='0 auto' h='83vh'>
+    <Box w='90%' m='0 auto' h='83vh' p='1em 0'>
       {
         user === USER_STATES.NOT_KNOWN && <Loader />
       }
@@ -54,7 +54,7 @@ const Pendientes: NextPage = () => {
           </Box>
           :
             pending.map(el => (
-              <h1 key={el.date}>Factura: #{el.data.billNumber}</h1>
+              <PendingCard key={el.date} pending={el} />
             ))
       }
     </Box>
