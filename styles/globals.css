@@ -9,14 +9,19 @@ body {
     background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
 body::-webkit-scrollbar {
-  width: 5px;               /* width of the entire scrollbar */
+  width: 10px;               /* width of the entire scrollbar */
 }
 
 body::-webkit-scrollbar-track {
-  background: orange;        /* color of the tracking area */
+  background: #1117;        /* color of the tracking area */
 }
+
+body::-webkit-scrollbar-thumb {
+  background-color: #0007;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+}
+
 
 a {
   color: inherit;

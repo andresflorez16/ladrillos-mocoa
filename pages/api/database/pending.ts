@@ -10,7 +10,7 @@ const getPending = async (req: NextApiRequest, res: NextApiResponse<PendingData[
     const ids = dataId.docs.map(el => el.id)
     const data = ids.map(async elId => {
       const sales = await refSales.doc(elId).collection('mes').get()
-      return sales.docs.map(el => ({ date: el.id, data: el.data() }))
+      return sales.docs.map(el => ({ date: el.id, data: el.data(), collection: elId }))
     })
     const dataRaw = await Promise.all(data)
     const pending = dataRaw.reduce((acc, el) => acc.concat(el), [])

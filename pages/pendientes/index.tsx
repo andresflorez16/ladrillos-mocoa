@@ -13,6 +13,7 @@ const Pendientes: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [isEmpty, setIsEmpty] = useState(false)
   const [pending, setPending] = useState<PendingData[]>([])
+  const [update, setUpdate] = useState(false)
   const user = useUser() 
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const Pendientes: NextPage = () => {
       .then(({ data }) => {
         if (apiSubscribe) {
           setLoading(false)
+          setUpdate(false)
           if (data.msg) setIsEmpty(true)
           if (data.length > 0) {
             setIsEmpty(false)
@@ -30,13 +32,15 @@ const Pendientes: NextPage = () => {
         }
       })
       return () => { apiSubscribe = false }
-  }, [user])
+  }, [user, update === true])
+
+  const updating = (isUpdate: boolean) => setUpdate(isUpdate)
 
   return (
     <Box 
       w='90%' 
       m='0 auto'
-      h='80vh'
+      h='83vh'
       p='1em 0'
       overflowY='auto'
       className={styles.container}
@@ -62,7 +66,7 @@ const Pendientes: NextPage = () => {
           </Box>
           :
             pending.map(el => (
-              <PendingCard key={el.date} pending={el} />
+              <PendingCard key={el.date} update={updating} pending={el} />
             ))
       }
     </Box>

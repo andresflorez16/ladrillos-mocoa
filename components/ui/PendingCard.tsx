@@ -14,7 +14,12 @@ import {
 import { PendingData, UpdatePendingBillData } from 'interfaces'
 import { updatingPendingBill } from '../../firebase/database'
 
-export const PendingCard: React.FC<{ pending: PendingData }> = ({ pending }) => {
+interface Props {
+  pending: PendingData,
+  update: (isUpdate: boolean) => React.SetStateAction<any> 
+}
+
+export const PendingCard: React.FC<Props> = ({ pending, update }) => {
 
   const [payType, setPayType] = useState(pending.data.payType)
   const [shipping, setShipping] = useState(pending.data.shipping)
@@ -30,7 +35,8 @@ export const PendingCard: React.FC<{ pending: PendingData }> = ({ pending }) => 
     const dataForm = Object.fromEntries(new FormData(target))
     if (dataForm.pay && parseFloat(dataForm.pay as string) < 0) dataForm['pay'] = ''
     if (!dataForm.pay) dataForm['pay'] = ''
-    updatingPendingBill({ ...dataForm, id: pending.date } as UpdatePendingBillData)
+      //updatingPendingBill({ ...dataForm, pay: pay.toString(), id: pending.date, collection: pending.collection } as UpdatePendingBillData)
+    update(true)
   }
 
   const errorPay = pay > total
@@ -42,7 +48,8 @@ export const PendingCard: React.FC<{ pending: PendingData }> = ({ pending }) => 
     if (currentNewValue > 0) {
       setPay(billPay + currentNewValue)
       setRest(total - (billPay + currentNewValue))
-    } else {
+    }
+    if (currentNewValue === 0 || currentNewValue < 0){
       setPay(billPay)
       setRest(total - billPay)
     } 

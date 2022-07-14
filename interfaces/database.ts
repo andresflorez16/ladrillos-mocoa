@@ -34,6 +34,7 @@ export interface DataBillForm {
 export interface PendingData {
 	date: string;
 	data: DataBillForm;
+	collection: string
 }
 
 export interface NoData {
@@ -42,6 +43,7 @@ export interface NoData {
 }
 
 export interface UpdatePendingBillData {
+	collection: string,
 	id: string,
   shipping: string,
 	payType: string,

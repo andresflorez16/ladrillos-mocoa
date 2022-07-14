@@ -3,9 +3,11 @@ import db from './index'
 
 const refSales = db.collection('ventas')
 
-const updatePending = (req: NextApiRequest, res: NextApiResponse) => {
+const updatePending = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    console.log(req.body)
+    const bill = refSales.doc(req.body.collection).collection('mes').doc(req.body.id)
+    const updated = await bill.update({ shipping: req.body.shipping, pay: req.body.pay, payType: req.body.payType })
+    console.log(updated)
     res.json({})
   }
   catch (err) {
