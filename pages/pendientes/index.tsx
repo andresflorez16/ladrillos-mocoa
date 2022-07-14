@@ -7,6 +7,7 @@ import { api } from 'api-queries'
 import { PendingData, NoData } from 'interfaces'
 import { Loader, PendingCard } from 'components/ui'
 import { formatPendingData } from '../../firebase'
+import styles from 'styles/PendingPage.module.css'
 
 const Pendientes: NextPage = () => {
   const [loading, setLoading] = useState(false)
@@ -16,11 +17,11 @@ const Pendientes: NextPage = () => {
 
   useEffect(() => {
     let apiSubscribe = true
-    setLoading(!loading)
+    setLoading(true)
     user && api.get<PendingData[] | NoData | any>('/api/database/pending')
       .then(({ data }) => {
         if (apiSubscribe) {
-          setLoading(!loading)
+          setLoading(false)
           if (data.msg) setIsEmpty(true)
           if (data.length > 0) {
             setIsEmpty(false)
@@ -32,7 +33,14 @@ const Pendientes: NextPage = () => {
   }, [user])
 
   return (
-    <Box w='90%' m='0 auto' h='83vh' p='1em 0'>
+    <Box 
+      w='90%' 
+      m='0 auto'
+      h='80vh'
+      p='1em 0'
+      overflowY='auto'
+      className={styles.container}
+    >
       {
         user === USER_STATES.NOT_KNOWN && <Loader />
       }
@@ -46,7 +54,7 @@ const Pendientes: NextPage = () => {
             w='100%' 
             justifyContent='center'
             alignItems='center'
-            h='100%'
+            h='83vh'
             color='#fff'
           >
             <InfoIcon boxSize={10} mr={5} />
