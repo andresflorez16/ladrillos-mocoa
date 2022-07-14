@@ -40,3 +40,10 @@ export interface NoData {
 	msg: string,
 	code: number
 }
+
+export interface UpdatePendingBillData {
+	id: string,
+  shipping: string,
+	payType: string,
+	pay: string
+}

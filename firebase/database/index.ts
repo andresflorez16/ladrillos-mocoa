@@ -10,7 +10,7 @@ import {
   getDocs
 } from 'firebase/firestore'
 import { app } from '../client'
-import { DataBillForm, PendingData } from 'interfaces'
+import { DataBillForm, PendingData, UpdatePendingBillData } from 'interfaces'
 import { api } from 'api-queries'
 
 const db = getFirestore(app)
@@ -55,3 +55,7 @@ export const formatPendingData = (data: PendingData[]) => {
     return (el.data.payType === 'credit' || el.data.shipping === 'pending')
   })
 }
+
+export const updatingPendingBill = async (dataBill: UpdatePendingBillData) => {
+  const { data } = await api.put('/api/database/updatePending', dataBill)
+} 

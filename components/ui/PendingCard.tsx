@@ -11,28 +11,42 @@ import {
   InputLeftAddon,
   Input  
 } from '@chakra-ui/react'
-import { PendingData } from 'interfaces'
+import { PendingData, UpdatePendingBillData } from 'interfaces'
+import { updatingPendingBill } from '../../firebase/database'
 
 export const PendingCard: React.FC<{ pending: PendingData }> = ({ pending }) => {
 
   const [payType, setPayType] = useState(pending.data.payType)
   const [shipping, setShipping] = useState(pending.data.shipping)
+  const [total, setTotal] = useState(pending.data.total)
+  const [pay, setPay] = useState(pending.data.pay.length > 0 ? parseFloat(pending.data.pay) : 0)
+  const [rest, setRest] = useState(total - pay)
 
   const date = new Date(parseInt(pending.date)).toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-  const total = pending.data.total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
-  let pay: string | number = (0).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
-  let rest: string | number = pending.data.total
-  if(pending.data.pay.length > 0) {
-    pay = parseFloat(pending.data.pay).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
-    rest = (rest - parseFloat(pending.data.pay)).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
-  } else rest = rest.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
-
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const { target }: any = e
     const dataForm = Object.fromEntries(new FormData(target))
+    if (dataForm.pay && parseFloat(dataForm.pay as string) < 0) dataForm['pay'] = ''
+    if (!dataForm.pay) dataForm['pay'] = ''
+    updatingPendingBill({ ...dataForm, id: pending.date } as UpdatePendingBillData)
   }
 
+  const errorPay = pay > total
+
+  const handleNewPay = (e: React.ChangeEvent) => {
+    const { value } = e.target as unknown as { value: string }
+    const billPay = pending.data.pay.length > 0 ? parseFloat(pending.data.pay) : 0
+    const currentNewValue = parseFloat(value)
+    if (currentNewValue > 0) {
+      setPay(billPay + currentNewValue)
+      setRest(total - (billPay + currentNewValue))
+    } else {
+      setPay(billPay)
+      setRest(total - billPay)
+    } 
+  }
 
   return (
     <Box 
@@ -45,9 +59,15 @@ export const PendingCard: React.FC<{ pending: PendingData }> = ({ pending }) => 
     >
       <Text fontSize='sm'>Número de factura: <strong>#{pending.data.billNumber}</strong></Text>
       <Text fontSize='sm'>Fecha de facturación: {date}</Text>
-      <Text fontSize='sm' fontWeight='bold'>Total: {total}</Text>
-      <Text fontSize='sm' fontWeight='bold'>Abono: {pay}</Text>
-      <Text fontSize='sm' fontWeight='bold'>Saldo: {rest}</Text>
+      <Text fontSize='sm' fontWeight='bold'>Total: {total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+      <Text fontSize='sm' fontWeight='bold'>Abono: {pay.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+      <Text 
+        fontSize='sm' 
+        fontWeight='bold'
+        color={errorPay ? '#f00' : 'auto'}
+      >
+        Saldo: {rest.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
+      </Text>
       <FormControl
         onSubmit={handleSubmit}
         as='form'
@@ -73,6 +93,8 @@ export const PendingCard: React.FC<{ pending: PendingData }> = ({ pending }) => 
                 <InputGroup size='sm'>
                   <InputLeftAddon color='#000' bg='#ccc' children='$' />
                   <Input 
+                    onChange={handleNewPay}
+                    outline={errorPay ? '3px solid #f00' : 'none'}
                     name='pay'
                     type='number'
                     _focus={{ background: '#ddd' }}
@@ -91,6 +113,7 @@ export const PendingCard: React.FC<{ pending: PendingData }> = ({ pending }) => 
         </Box>
         <Box>
           <Button 
+            isDisabled={errorPay}
             type='submit'
             _hover={{ background: '#2C536477' }}
             mr={[0, 10]} 
