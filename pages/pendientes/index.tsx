@@ -23,8 +23,11 @@ const Pendientes: NextPage = () => {
           setLoading(false)
           if (data.msg) setIsEmpty(true)
           if (data.length > 0) {
-            setIsEmpty(false)
-            setPending(formatPendingData(data))
+            const pendingData = formatPendingData(data) 
+            if (pendingData.length > 0) {
+              setIsEmpty(false)
+              setPending(pendingData)
+            } else setIsEmpty(true)
           }  
         }
       })
@@ -55,7 +58,7 @@ const Pendientes: NextPage = () => {
             w='100%' 
             justifyContent='center'
             alignItems='center'
-            h='83vh'
+            h='100%'
             color='#fff'
           >
             <InfoIcon boxSize={10} mr={5} />

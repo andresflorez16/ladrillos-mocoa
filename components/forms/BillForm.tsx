@@ -92,7 +92,7 @@ export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
   const resetData = () => {
     setBrick([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
     setCement([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
-    setOtherInput([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: 'other' }])
+    setOtherInput([])
   }
 
   const handleRemoveBrick = (id: string) => {

@@ -34,10 +34,9 @@ export const PendingCard: React.FC<Props> = ({ pending, update }) => {
     const { target }: any = e
     const dataForm = Object.fromEntries(new FormData(target))
     if (dataForm.pay && parseFloat(dataForm.pay as string) < 0) dataForm['pay'] = ''
-    if (!dataForm.pay) dataForm['pay'] = ''
-      updatingPendingBill({ ...dataForm, pay: pay.toString(), id: pending.date, collection: pending.collection } as UpdatePendingBillData)
+    if (!dataForm.pay || pay === 0) dataForm['pay'] = ''
+    updatingPendingBill({ ...dataForm, pay: pay.toString(), id: pending.date, collection: pending.collection } as UpdatePendingBillData)
     update(true)
-    console.log(dataForm)
   }
 
   const errorPay = pay > total
