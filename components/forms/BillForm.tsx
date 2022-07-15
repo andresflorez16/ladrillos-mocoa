@@ -16,7 +16,7 @@ import { otherData } from 'utils'
 export const BillForm: React.FC<Inventory> = ({ bricks, cements }) => {
   const [brick, setBrick] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
   const [cement, setCement] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: '' }])
-  const [otherInput, setOtherInput] = useState<ProductData[]>([{ id: generate(), cantity: 1, price: 0, subtotal: 0, name: 'other' }])
+  const [otherInput, setOtherInput] = useState<ProductData[]>([])
 
   const getTotal = (): any => {
     let subtotalBrick: number = 0

@@ -10,20 +10,17 @@ import { formatPendingData } from '../../firebase'
 import styles from 'styles/PendingPage.module.css'
 
 const Pendientes: NextPage = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [isEmpty, setIsEmpty] = useState(false)
   const [pending, setPending] = useState<PendingData[]>([])
-  const [update, setUpdate] = useState(false)
   const user = useUser() 
 
   useEffect(() => {
     let apiSubscribe = true
-    setLoading(true)
     user && api.get<PendingData[] | NoData | any>('/api/database/pending')
       .then(({ data }) => {
         if (apiSubscribe) {
           setLoading(false)
-          setUpdate(false)
           if (data.msg) setIsEmpty(true)
           if (data.length > 0) {
             setIsEmpty(false)
@@ -32,9 +29,9 @@ const Pendientes: NextPage = () => {
         }
       })
       return () => { apiSubscribe = false }
-  }, [user, update === true])
+  }, [user, loading])
 
-  const updating = (isUpdate: boolean) => setUpdate(isUpdate)
+  const updating = (isUpdate: boolean) => setLoading(isUpdate)
 
   return (
     <Box 
@@ -52,7 +49,7 @@ const Pendientes: NextPage = () => {
         loading && <Loader />
       }
       {
-        isEmpty ?
+        isEmpty && !loading &&
           <Box 
             display='flex'
             w='100%' 
@@ -64,7 +61,9 @@ const Pendientes: NextPage = () => {
             <InfoIcon boxSize={10} mr={5} />
             No hay facturas pendientes
           </Box>
-          :
+      }
+      {
+        !isEmpty && !loading &&
             pending.map(el => (
               <PendingCard key={el.date} update={updating} pending={el} />
             ))

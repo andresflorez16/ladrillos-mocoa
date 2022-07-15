@@ -52,7 +52,10 @@ export const addBill = async (data: DataBillForm) => {
 
 export const formatPendingData = (data: PendingData[]) => {
   return data.filter(el => {
-    return (el.data.payType === 'credit' || el.data.shipping === 'pending')
+    if (el.data.pay.length > 0) {
+      const pay = parseFloat(el.data.pay)
+      return (el.data.shipping === 'pending' || pay < el.data.total )
+    } else return (el.data.payType === 'credit' || el.data.shipping === 'pending')
   })
 }
 
