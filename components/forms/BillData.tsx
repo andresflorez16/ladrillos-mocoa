@@ -30,6 +30,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
   const [checkShipping, setCheckShipping] = useState('pending')
   const [billNumber, setBillNumber] = useState('0000')
   const [loading, setLoading] = useState(false)
+  const [flete, setFlete] = useState('not')
 
   const handleForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -142,26 +143,61 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
           </RadioGroup>
         </Box>
       </Box>
-      <RadioGroup size='md' defaultValue={checkEmail} value={checkEmail} onChange={handleChangeInput}>
-          <FormLabel mt={5}>Correo de facturación:</FormLabel>
+      <Box>
+      </Box>
+      {/*<RadioGroup size='md' defaultValue={checkEmail} value={checkEmail} onChange={handleChangeInput}>*/}
+          {/*<FormLabel mt={5}>Correo de facturación:</FormLabel>*/}
+          {/*<Radio mr={5} value='not'>No</Radio>*/}
+          {/*<Radio mb={5} value='yes'>Sí</Radio>*/}
+          {/*{*/}
+            {/*checkEmail === 'yes' &&*/}
+            {/*<Input */}
+              {/*variant='filled'*/}
+              {/*color='black'*/}
+              {/*_focus={{ background: '#ddd' }}*/}
+              {/*id='email'*/}
+              {/*onChange={handleEmail}*/}
+              {/*isRequired*/}
+              {/*name='email'*/}
+              {/*position={{ base: 'static', md: 'absolute' }}*/}
+              {/*w={{ base: '100%', md: '30%' }}*/}
+              {/*ml={5}*/}
+              {/*type='email'*/}
+              {/*size='md'*/}
+              {/*placeholder='Email de facturación'*/}
+            {/*/>*/}
+          {/*}*/}
+          {/*{*/}
+            {/*emailErr && */}
+              {/*<Alert*/}
+                {/*w='50%'*/}
+                {/*status='error'*/}
+                {/*m='5px auto'*/}
+                {/*borderRadius='lg'*/}
+                {/*color='black'*/}
+              {/*>*/}
+                {/*<WarningIcon mr={5} />*/}
+                {/*Digite el correo*/}
+              {/*</Alert>*/}
+          {/*}*/}
+        {/*</RadioGroup>*/}
+        <RadioGroup size='md' defaultValue={flete} onChange={setFlete}>
+          <FormLabel mt={5}>Flete:</FormLabel>
           <Radio mr={5} value='not'>No</Radio>
           <Radio mb={5} value='yes'>Sí</Radio>
           {
-            checkEmail === 'yes' &&
+            flete === 'yes' &&
             <Input 
               variant='filled'
               color='black'
               _focus={{ background: '#ddd' }}
-              id='email'
-              onChange={handleEmail}
               isRequired
-              name='email'
+              name='fleteValue'
               position={{ base: 'static', md: 'absolute' }}
               w={{ base: '100%', md: '30%' }}
               ml={5}
-              type='email'
+              type='number'
               size='md'
-              placeholder='Email de facturación'
             />
           }
           {

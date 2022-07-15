@@ -16,7 +16,8 @@ const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
   return (
     <Box
       w='80%'
-      h='85vh'
+      minH='83vh'
+      h='100%'
       m='0 auto'
       mt={{ base: '30px', md: '0' }}
       p={2}
