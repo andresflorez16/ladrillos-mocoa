@@ -197,7 +197,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
               w={{ base: '100%', md: '30%' }}
               ml={5}
               type='number'
-              size='md'
+              size='sm'
             />
           }
           {
