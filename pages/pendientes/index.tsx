@@ -5,7 +5,7 @@ import { InfoIcon } from '@chakra-ui/icons'
 import { useUser, USER_STATES } from 'hooks'
 import { api } from 'api-queries'
 import { PendingData, NoData } from 'interfaces'
-import { Loader, PendingCard } from 'components/ui'
+import { Loader, PendingCard, SearchBar } from 'components/ui'
 import { formatPendingData } from '../../firebase'
 import styles from 'styles/PendingPage.module.css'
 
@@ -65,11 +65,29 @@ const Pendientes: NextPage = () => {
             No hay facturas pendientes
           </Box>
       }
+     
       {
         !isEmpty && !loading &&
-            pending.map(el => (
-              <PendingCard key={el.date} update={updating} pending={el} />
-            ))
+          <>
+            <Box
+              w='100%'
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+              m={{ base: '10px auto', md: '0 auto' }}
+              gap={5}
+            >
+              <SearchBar 
+                title='Buscar factura' 
+                type='number'
+              />
+            </Box>
+            {
+              pending.map(el => (
+                <PendingCard key={el.date} update={updating} pending={el} />
+              ))
+            }
+          </>
       }
     </Box>
   )

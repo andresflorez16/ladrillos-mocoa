@@ -11,7 +11,9 @@ import {
   Radio,
   Button,
   Link,
+  Alert
 } from '@chakra-ui/react'
+import { WarningIcon } from '@chakra-ui/icons'
 import { addBill } from '../../firebase'
 import { DataForm, DataBillForm } from 'interfaces'
 import { NumberInputBill } from './NumberInputBill'
@@ -22,7 +24,7 @@ interface Props {
   resetData: () => React.SetStateAction<any>
 }
 
-export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
+export const BillData2: React.FC<Props> = ({ isValid, data, resetData }) => {
 
   const [checkEmail, setCheckEmail] = useState('not')
   const [checkPay, setCheckPay] = useState('cash')
@@ -31,26 +33,15 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
   const [billNumber, setBillNumber] = useState('0000')
   const [loading, setLoading] = useState(false)
   const [flete, setFlete] = useState('not')
-  const [fleteValue, setFleteValue] = useState('')
 
   const handleForm = (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     const { target }: any = e
-    let dataBill: DataBillForm = { 
-      ...data(), 
-      payType: checkPay, 
-      shipping: checkShipping,
-      isEmail: checkEmail, 
-      emailBill: '', 
-      billNumber, 
-      pay: inputPay,
-      isFlete: flete,
-      fleteValue: 0
-    }
-    if (flete === 'yes') {
-      const { fleteValue } = Object.fromEntries(new FormData(target)) as unknown as { fleteValue: string }
-      dataBill = { ...dataBill, fleteValue: parseFloat(fleteValue) }
+    let dataBill: DataBillForm = { ...data(), payType: checkPay, shipping: checkShipping, isEmail: checkEmail, emailBill: '', billNumber, pay: inputPay }
+    if (checkEmail === 'yes') {
+      const { email } = Object.fromEntries(new FormData(target)) as unknown as { email: string }
+      dataBill = { ...dataBill, emailBill: email }
     }
     addBill(dataBill)
       .then(() => {
@@ -58,7 +49,6 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
         setCheckPay('cash')
         setCheckShipping('pending')
         setBillNumber('0000')
-        setFlete('not')
         setInputPay('')
         resetData()
         setLoading(false)
@@ -66,6 +56,25 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
       })
       .catch(err => console.log('Error adding bill', err))
   }
+
+  const [inputEmail, setInputEmail] = useState(checkEmail === 'yes' ? '' : null)
+
+  const handleChangeInput = (e: React.ChangeEvent | string) => {
+    if (e === 'not') {
+      setCheckEmail('not')
+      setInputEmail(null)
+    } else {
+      setCheckEmail('yes')
+    }
+  }
+
+  const handleEmail = (e: React.ChangeEvent) => {
+    e.preventDefault()
+    const { value } = e.target as unknown as { value: string }
+    setInputEmail(value)
+  }
+
+  const emailErr = inputEmail === ''
 
   const handleBillNumber = (e: React.ChangeEvent) => {
     const { value } = e.target as unknown as { value: string }
@@ -79,8 +88,6 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
     const { value } = e.target as unknown as { value: string }
     setInputPay(value)
   }
-
-  const fleteError = flete === 'yes' && fleteValue === ''
 
   const isError = parseFloat(inputPay) < 0
 
@@ -138,6 +145,44 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
           </RadioGroup>
         </Box>
       </Box>
+      <Box>
+      </Box>
+      {/*<RadioGroup size='md' defaultValue={checkEmail} value={checkEmail} onChange={handleChangeInput}>*/}
+          {/*<FormLabel mt={5}>Correo de facturación:</FormLabel>*/}
+          {/*<Radio mr={5} value='not'>No</Radio>*/}
+          {/*<Radio mb={5} value='yes'>Sí</Radio>*/}
+          {/*{*/}
+            {/*checkEmail === 'yes' &&*/}
+            {/*<Input */}
+              {/*variant='filled'*/}
+              {/*color='black'*/}
+              {/*_focus={{ background: '#ddd' }}*/}
+              {/*id='email'*/}
+              {/*onChange={handleEmail}*/}
+              {/*isRequired*/}
+              {/*name='email'*/}
+              {/*position={{ base: 'static', md: 'absolute' }}*/}
+              {/*w={{ base: '100%', md: '30%' }}*/}
+              {/*ml={5}*/}
+              {/*type='email'*/}
+              {/*size='md'*/}
+              {/*placeholder='Email de facturación'*/}
+            {/*/>*/}
+          {/*}*/}
+          {/*{*/}
+            {/*emailErr && */}
+              {/*<Alert*/}
+                {/*w='50%'*/}
+                {/*status='error'*/}
+                {/*m='5px auto'*/}
+                {/*borderRadius='lg'*/}
+                {/*color='black'*/}
+              {/*>*/}
+                {/*<WarningIcon mr={5} />*/}
+                {/*Digite el correo*/}
+              {/*</Alert>*/}
+          {/*}*/}
+        {/*</RadioGroup>*/}
         <RadioGroup size='md' defaultValue={flete} onChange={setFlete}>
           <FormLabel mt={5}>Flete:</FormLabel>
           <Radio mr={5} value='not'>No</Radio>
@@ -145,7 +190,11 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
           {
             flete === 'yes' &&
               <InputGroup 
-                w={{ base: '100%', md: '100%' }}
+                position={{ base: 'static', md: 'absolute' }}
+                bottom='1em'
+                left='8em'
+                w={{ base: '100%', md: '30%' }}
+                ml={{ base: '0', md: '5px' }}
                 size='sm'
               >
                 <InputLeftAddon children='$' bg='#2C5364'  />
@@ -157,10 +206,21 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
                   isRequired
                   name='fleteValue'
                   type='number'
-                  outline={fleteError ? '2px solid #f00' : 'none'}
-                  onChange={e => setFleteValue(e.target.value)}
                 />
             </InputGroup>
+          }
+          {
+            emailErr && 
+              <Alert
+                w='50%'
+                status='error'
+                m='5px auto'
+                borderRadius='lg'
+                color='black'
+              >
+                <WarningIcon mr={5} />
+                Digite el correo
+              </Alert>
           }
         </RadioGroup>
       <Box 
@@ -169,14 +229,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
         display='flex'
         justifyContent='center'
       >
-        <Button 
-          type='submit'
-          isDisabled={isValid || fleteError || billNumber === '' || billNumber.length < 4 || loading} 
-          mr={5}
-          color='black'
-        >
-          Confirmar
-        </Button>
+        <Button type='submit' isDisabled={isValid || emailErr || billNumber === '' || billNumber.length < 4 || loading} mr={5} color='black'>Confirmar</Button>
         <NextLink href='/home'>
           <Link>
             <Button type='submit' color='red'>Cancelar</Button>

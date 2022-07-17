@@ -27,6 +27,8 @@ export interface DataBillForm {
 	pay: string,
 	shipping: string,
 	isEmail: string,
+	isFlete: string,
+	fleteValue: number,
 	emailBill: string,
 	billNumber: string
 }
