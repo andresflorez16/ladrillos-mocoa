@@ -24,7 +24,7 @@ const Pendientes: NextPage = () => {
           setLoading(false)
           if (data.msg) setIsEmpty(true)
           if (data.length > 0) {
-            const pendingData = formatPendingData(data) 
+            const pendingData = formatPendingData(data, billNumber) 
             if (pendingData.length > 0) {
               setIsEmpty(false)
               setPending(pendingData)
@@ -33,7 +33,7 @@ const Pendientes: NextPage = () => {
         }
       })
       return () => { apiSubscribe = false }
-  }, [user, loading])
+  }, [user, loading, billNumber])
 
   const updating = (isUpdate: boolean) => setLoading(isUpdate)
 
@@ -41,9 +41,9 @@ const Pendientes: NextPage = () => {
     <Box 
       w='90%' 
       m='0 auto'
-      h='83vh'
+      h='80vh'
       p='1em 0'
-      overflowY='auto'
+      mb={2}
       className={styles.container}
     >
       {
@@ -54,17 +54,32 @@ const Pendientes: NextPage = () => {
       }
       {
         isEmpty && !loading &&
-          <Box 
-            display='flex'
-            w='100%' 
-            justifyContent='center'
-            alignItems='center'
-            h='100%'
-            color='#fff'
-          >
-            <InfoIcon boxSize={10} mr={5} />
-            No hay facturas pendientes
-          </Box>
+          <>
+            <Box
+              w='100%'
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+              m={{ base: '10px auto', md: '0 auto' }}
+            >
+              <SearchBar 
+                setBillNumber={setBillNumber}
+                title='Buscar factura' 
+                type='number'
+              />
+            </Box>
+            <Box 
+              display='flex'
+              w='100%' 
+              h='80%'
+              justifyContent='center'
+              alignItems='center'
+              color='#fff'
+            >
+              <InfoIcon boxSize={10} mr={5} />
+              No hay facturas pendientes
+            </Box>
+          </>
       }
      
       {
@@ -75,8 +90,7 @@ const Pendientes: NextPage = () => {
               display='flex'
               alignItems='center'
               justifyContent='center'
-              m={{ base: '10px auto', md: '0 auto' }}
-              gap={5}
+              m={{ base: '10px auto', md: '5px auto' }}
             >
               <SearchBar 
                 setBillNumber={setBillNumber}
@@ -84,11 +98,18 @@ const Pendientes: NextPage = () => {
                 type='number'
               />
             </Box>
-            {
-              pending.map(el => (
-                <PendingCard key={el.date} update={updating} pending={el} />
-              ))
-            }
+            <Box 
+              w='100%' 
+              h='90%' 
+              overflowY='auto' 
+              className={styles.container}
+            >
+              {
+                pending.map(el => (
+                  <PendingCard key={el.date} update={updating} pending={el} />
+                ))
+              }
+            </Box>
           </>
       }
     </Box>

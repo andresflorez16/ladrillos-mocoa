@@ -15,17 +15,14 @@ interface Props {
 
 export const SearchBar: React.FC<Props> = ({ title, type, setBillNumber }) => {
   return (
-    <>
-      <InputGroup w={{ base: '60%', md: '30%' }} variant='filled' >
-        <InputLeftAddon children={<SearchIcon />} />
-        <Input
-          onChange={e => setBillNumber(e.target.value)}
-          type={type}
-          _focus={{ background: '#ddd' }}
-          placeholder={title}
-        />
-      </InputGroup>
-      <Button>Buscar</Button>
-    </>
+    <InputGroup w={{ base: '60%', md: '30%' }} variant='filled' >
+      <InputLeftAddon children={<SearchIcon />} />
+      <Input
+        onChange={e => setBillNumber(e.target.value)}
+        type={type}
+        _focus={{ background: '#ddd' }}
+        placeholder={title}
+      />
+    </InputGroup>
   )
 }
