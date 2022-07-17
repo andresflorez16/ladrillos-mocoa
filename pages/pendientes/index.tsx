@@ -13,6 +13,7 @@ const Pendientes: NextPage = () => {
   const [loading, setLoading] = useState(true)
   const [isEmpty, setIsEmpty] = useState(false)
   const [pending, setPending] = useState<PendingData[]>([])
+  const [billNumber, setBillNumber] = useState('')
   const user = useUser() 
 
   useEffect(() => {
@@ -78,6 +79,7 @@ const Pendientes: NextPage = () => {
               gap={5}
             >
               <SearchBar 
+                setBillNumber={setBillNumber}
                 title='Buscar factura' 
                 type='number'
               />
