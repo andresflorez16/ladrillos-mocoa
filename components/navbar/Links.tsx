@@ -30,6 +30,16 @@ export const Links: FC = () => {
         flexGrow={1}
         pl={5}
       >
+        <NextLink href='/inventario'>
+          <Link
+            p={2}
+            color='white'
+            textDecor={ asPath === '/inventario' ? 'underline' : 'none' }
+            fontWeight={ asPath === '/inventario' ? 'bold' : 'normal' }
+          >
+            Inventario
+          </Link>
+        </NextLink>
         <NextLink href='/facturar'>
           <Link
             p={2}
@@ -63,8 +73,8 @@ export const Links: FC = () => {
       >
         <Menu isLazy >
           <MenuButton
-            _hover={{ background: '#444' }}
-            _active={{ background: '#444' }}
+            _hover={{ background: '#9996' }}
+            _active={{ background: '#9996' }}
             as={IconButton}
             icon={<HamburgerIcon />}
             variant='outline'
@@ -72,6 +82,17 @@ export const Links: FC = () => {
             color='white'
           />
           <MenuList>
+            <NextLink href='/inventario' passHref>
+              <MenuItem 
+                as={Link} 
+                p={2} 
+                color='black' 
+                textDecor={ asPath === '/inventario' ? 'underline' : 'none' }
+                fontWeight={ asPath === '/inventario' ? 'bold' : 'normal' }
+              >
+                Inventario
+              </MenuItem>
+            </NextLink>
             <NextLink href='/facturar' passHref>
               <MenuItem 
                 as={Link} 
