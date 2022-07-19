@@ -15,13 +15,12 @@ const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
 
   return (
     <Box
-      w='80%'
+      w={{ base: 'full', md: '75%' }}
       minH='83vh'
       h='100%'
       m='0 auto'
-      mt={{ base: '30px', md: '0' }}
-      p={2}
       borderRadius='10px'
+      p={2}
     >
       {
         user === USER_STATES.NOT_KNOWN &&
@@ -32,7 +31,7 @@ const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
       {
         user &&
           <>
-            <Text fontSize='2em' color='white'>Nueva venta</Text>
+            <Text fontSize='1.5em' borderBottom='1px solid #aaa' mb={5} fontWeight='bold' color='white'>Nueva venta</Text>
             <BillForm bricks={bricks} cements={cements} />
           </>
       }

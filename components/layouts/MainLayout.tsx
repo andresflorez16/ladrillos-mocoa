@@ -11,7 +11,7 @@ interface Props {
 
 export const MainLayout: FC<Props> = ({ children }) => {
   return (
-    <Box className={style.container} as='main' pb={8} display='flex' justifyContent='center' flexDir='column' >
+    <Box className={style.container} as='main' display='flex' justifyContent='center' flexDir='column' >
 			<Head>
         <title>Ladrillos Mocoa</title>
         <meta name='author' content="Andres Florez" />

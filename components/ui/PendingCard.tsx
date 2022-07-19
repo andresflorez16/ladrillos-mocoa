@@ -98,8 +98,8 @@ export const PendingCard: React.FC<Props> = ({ pending, update }) => {
       >
         {
           bricks.map(el => (
-            <Box>
-              <Text fontSize='sm' key={el.id}>{el.name}</Text>
+            <Box key={el.id}>
+              <Text fontSize='sm'>{el.name}</Text>
               <Text fontSize='sm'>Cantidad: {el.cantity}</Text>
               <Text fontSize='sm'>Subtotal: {el.subtotal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
             </Box>
@@ -107,8 +107,8 @@ export const PendingCard: React.FC<Props> = ({ pending, update }) => {
         }
         {
           cement.map(el => (
-            <Box>
-              <Text fontSize='sm' key={el.id}>{el.name}</Text>
+            <Box key={el.id}>
+              <Text fontSize='sm'>{el.name}</Text>
               <Text fontSize='sm'>Cantidad: {el.cantity}</Text>
               <Text fontSize='sm'>Subtotal: {el.subtotal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
             </Box>
@@ -116,8 +116,8 @@ export const PendingCard: React.FC<Props> = ({ pending, update }) => {
         }
         {
           others.map(el => (
-            <Box>
-              <Text fontSize='sm' key={el.id}>{el.name}</Text>
+            <Box key={el.id}>
+              <Text fontSize='sm'>{el.name}</Text>
               <Text fontSize='sm'>Cantidad: {el.cantity}</Text>
               <Text fontSize='sm'>Subtotal: {el.subtotal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
             </Box>

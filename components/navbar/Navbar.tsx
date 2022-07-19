@@ -17,11 +17,11 @@ export const Navbar: React.FC = () => {
       top='0'
       as='nav'
       w='100%'
-      h='10%'
       bg='#0987A099'
       css={{ backdropFilter: 'blur(10px)' }}
       zIndex={2}
       boxShadow='1px 1px 10px #aaa7'
+      p={2}
     >
       <Flex
         justifyContent='space-between'
