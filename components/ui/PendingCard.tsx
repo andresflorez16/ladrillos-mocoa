@@ -21,6 +21,9 @@ interface Props {
 
 export const PendingCard: React.FC<Props> = ({ pending, update }) => {
 
+  const [bricks, setBricks] = useState(pending.data.brick)
+  const [cement, setCement] = useState(pending.data.cement)
+  const [others, setOthers] = useState(pending.data.other)
   const [payType, setPayType] = useState(pending.data.payType)
   const [shipping, setShipping] = useState(pending.data.shipping)
   const [total, setTotal] = useState(pending.data.total)
@@ -66,15 +69,61 @@ export const PendingCard: React.FC<Props> = ({ pending, update }) => {
     >
       <Text fontSize='sm'>Número de factura: <strong>#{pending.data.billNumber}</strong></Text>
       <Text fontSize='sm'>Fecha de facturación: {date}</Text>
-      <Text fontSize='sm' fontWeight='bold'>Total: {total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
-      <Text fontSize='sm' fontWeight='bold'>Abono: {pay.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
-      <Text 
+      <Box
+        w='100%'
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        flexDirection={{ base: 'column', md: 'row' }}
+        gap={{ base: '0', md: '5px' }}
+        borderBottom='1px solid #3337'
+      >
+        <Text fontSize='sm' fontWeight='bold'>Total: {total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+        <Text fontSize='sm' fontWeight='bold'>Abono: {pay.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+        <Text fontSize='sm' fontWeight='bold'>Flete: {pending.data.fleteValue.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+        <Text 
         fontSize='sm' 
         fontWeight='bold'
         color={errorPay ? '#f00' : 'auto'}
+        >
+          Saldo: {rest.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
+        </Text>
+      </Box>
+      <Box
+        w='100%'
+        display='flex'
+        flexWrap='wrap'
+        gap={5}
+        mb={2}
       >
-        Saldo: {rest.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
-      </Text>
+        {
+          bricks.map(el => (
+            <Box>
+              <Text fontSize='sm' key={el.id}>{el.name}</Text>
+              <Text fontSize='sm'>Cantidad: {el.cantity}</Text>
+              <Text fontSize='sm'>Subtotal: {el.subtotal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+            </Box>
+          ))
+        }
+        {
+          cement.map(el => (
+            <Box>
+              <Text fontSize='sm' key={el.id}>{el.name}</Text>
+              <Text fontSize='sm'>Cantidad: {el.cantity}</Text>
+              <Text fontSize='sm'>Subtotal: {el.subtotal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+            </Box>
+          ))
+        }
+        {
+          others.map(el => (
+            <Box>
+              <Text fontSize='sm' key={el.id}>{el.name}</Text>
+              <Text fontSize='sm'>Cantidad: {el.cantity}</Text>
+              <Text fontSize='sm'>Subtotal: {el.subtotal.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</Text>
+            </Box>
+          ))
+        }
+      </Box>
       <FormControl
         onSubmit={handleSubmit}
         as='form'

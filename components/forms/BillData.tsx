@@ -50,7 +50,11 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
     }
     if (flete === 'yes') {
       const { fleteValue } = Object.fromEntries(new FormData(target)) as unknown as { fleteValue: string }
-      dataBill = { ...dataBill, fleteValue: parseFloat(fleteValue) }
+      dataBill = { 
+        ...dataBill, 
+        fleteValue: parseFloat(fleteValue),
+        total: dataBill.total + parseFloat(fleteValue)
+      }
     }
     addBill(dataBill)
       .then(() => {

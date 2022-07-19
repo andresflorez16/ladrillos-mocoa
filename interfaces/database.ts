@@ -22,7 +22,7 @@ export interface DataBillForm {
 	total: number,
 	brick: ProductData[],
 	cement: ProductData[],
-	other?: ProductData[],
+	other: ProductData[],
 	payType: string,
 	pay: string,
 	shipping: string,
