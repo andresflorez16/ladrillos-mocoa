@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { Product } from 'interfaces'
 import { ProductInfo } from './ProductInfo'
+import { addProduct } from '../../firebase'
 
 type Props = {
   productData: Product[],
@@ -30,14 +31,17 @@ type FormProps = {
 type InputProps = {
   label: string,
   id: string,
+  placeholder: string,
+  type: string,
+  handleNewProduct: (e: React.FormEvent) => void | any,
   refInput: typeof useRef
 }
 
-const TextInput: React.FC<InputProps> = React.forwardRef(({ label, id }, refInput) => {
+const TextInput: React.FC<InputProps> = React.forwardRef(({ label, id, placeholder, type, handleNewProduct }, refInput) => {
   return (
-    <FormControl>
+    <FormControl as='form' onSubmit={handleNewProduct}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
-      <Input ref={refInput as typeof useRef} />
+      <Input placeholder={placeholder} type={type} ref={refInput as typeof useRef} />
     </FormControl>
   )
 })
@@ -45,9 +49,9 @@ const TextInput: React.FC<InputProps> = React.forwardRef(({ label, id }, refInpu
 const FormProduct: React.FC<FormProps> = ({ ref, onCancel }) => {
   return (
     <Box>
-      <TextInput label='Nombre del producto' id='name' refInput={ref}/>
-      <TextInput label='Cantidad' id='cantity' refInput={ref}/>
-      <ButtonGroup display='flex' justifyContent='flex-end'>
+      <TextInput label='Nombre del producto' id='name' placeholder='Nombre' refInput={ref} type='text'/>
+      <TextInput label='Cantidad' id='cantity' placeholder='Cantidad' type='number' refInput={ref}/>
+      <ButtonGroup display='flex' mt={5} justifyContent='flex-end'>
         <Button variant='outline' onClick={onCancel as any}>Cancelar</Button>
         <Button colorScheme='teal'>Guardar</Button>
       </ButtonGroup>
@@ -58,6 +62,13 @@ const FormProduct: React.FC<FormProps> = ({ ref, onCancel }) => {
 export const Products: React.FC<Props> = ({ productData, productType }) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const ref = useRef(null)
+
+  const handleNewProduct = (e: React.FormEvent) => {
+    e.preventDefault()
+    const { target }: any = e
+    const data = Object.fromEntries(new FormData(target))
+    console.log(data)
+  }
 
   return (
     <Box 
@@ -89,7 +100,7 @@ export const Products: React.FC<Props> = ({ productData, productType }) => {
               closeOnBlur={true}
             >
               <PopoverTrigger>
-                <Button>Añadir otro</Button>
+                <Button mt={5} size='sm'>Añadir otro</Button>
               </PopoverTrigger>
               <PopoverContent p={5}>
                 <PopoverArrow />

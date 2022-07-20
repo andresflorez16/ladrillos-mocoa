@@ -5,6 +5,11 @@ export interface Product {
 	id: string,
 }
 
+export interface NewProduct {
+  name: string,
+	cantity: number
+}
+
 export interface BrickProps {
 	brickData: Product[]
 }

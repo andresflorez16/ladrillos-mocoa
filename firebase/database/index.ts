@@ -10,7 +10,7 @@ import {
   getDocs
 } from 'firebase/firestore'
 import { app } from '../client'
-import { DataBillForm, PendingData, UpdatePendingBillData } from 'interfaces'
+import { DataBillForm, PendingData, UpdatePendingBillData, NewProduct } from 'interfaces'
 import { api } from 'api-queries'
 
 const db = getFirestore(app)
@@ -58,6 +58,11 @@ export const formatPendingData = (data: PendingData[], billNumber: string) => {
     if (filterBillNumber.length > 0) return filterBillNumber
     else return pendingData
   } else return []
+}
+
+export const addProduct = async (ref: string, data: NewProduct) => {
+  const refDoc = doc(db, ref)
+  return await setDoc(refDoc, data)
 }
 
 export const updatingPendingBill = async (dataBill: UpdatePendingBillData) => {
