@@ -11,6 +11,7 @@ import {
   Radio,
   Button,
   Link,
+  useToast
 } from '@chakra-ui/react'
 import { addBill } from '../../firebase'
 import { DataForm, DataBillForm } from 'interfaces'
@@ -22,8 +23,16 @@ interface Props {
   resetData: () => React.SetStateAction<any>
 }
 
+const toastInfo = {
+  title: 'Factura agregada',
+  description: 'Puedes revisar en pendientes si hizo falta algo',
+  duration: 8000,
+  isClosable: true
+}
+
 export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
 
+  const toast = useToast()
   const [checkEmail, setCheckEmail] = useState('not')
   const [checkPay, setCheckPay] = useState('cash')
   const [inputPay, setInputPay] = useState('')
@@ -66,6 +75,7 @@ export const BillData: React.FC<Props> = ({ isValid, data, resetData }) => {
         setInputPay('')
         resetData()
         setLoading(false)
+        toast({ ...toastInfo, status: 'success' })
         console.log('added')
       })
       .catch(err => console.log('Error adding bill', err))

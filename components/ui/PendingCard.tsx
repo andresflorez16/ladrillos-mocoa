@@ -30,7 +30,7 @@ export const PendingCard: React.FC<Props> = ({ pending, update }) => {
   const [pay, setPay] = useState(pending.data.pay.length > 0 ? parseFloat(pending.data.pay) : 0)
   const [rest, setRest] = useState(total - pay)
 
-  const date = new Date(parseInt(pending.date)).toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  const date = new Date(parseInt(pending.date)).toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
