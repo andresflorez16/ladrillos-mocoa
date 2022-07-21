@@ -14,7 +14,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from '@chakra-ui/react'
-import { Product } from 'interfaces'
+import { Product, NewProduct } from 'interfaces'
 import { ProductInfo } from './ProductInfo'
 import { addProduct } from '../../firebase'
 
@@ -25,49 +25,59 @@ type Props = {
 
 type FormProps = {
   ref: typeof useRef | any,
-  onCancel: typeof useDisclosure | any
+  onCancel: typeof useDisclosure | any,
+  handleNewProduct: (e: React.FormEvent) => void | any,
 }
 
 type InputProps = {
   label: string,
-  id: string,
+  name: string,
   placeholder: string,
   type: string,
-  handleNewProduct: (e: React.FormEvent) => void | any,
-  refInput: typeof useRef
+  refInput?: typeof useRef | any
 }
 
-const TextInput: React.FC<InputProps> = React.forwardRef(({ label, id, placeholder, type, handleNewProduct }, refInput) => {
+const TextInput: React.FC<InputProps> = React.forwardRef(({ label, name, placeholder, type }, refInput) => {
   return (
-    <FormControl as='form' onSubmit={handleNewProduct}>
-      <FormLabel htmlFor={id}>{label}</FormLabel>
-      <Input placeholder={placeholder} type={type} ref={refInput as typeof useRef} />
+    <>
+      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <Input placeholder={placeholder} name={name} type={type}/>
+    </>
+  )
+})
+
+const FormProduct: React.FC<FormProps> = React.forwardRef(({ onCancel, handleNewProduct }, ref) => {
+  return (
+    <FormControl as='form' onSubmit={handleNewProduct} ref={ref as any}>
+      <TextInput label='Nombre del producto' name='name' placeholder='Nombre' refInput={ref} type='text'/>
+      <TextInput label='Cantidad' name='cantity' placeholder='Cantidad' type='number' refInput={ref}/>
+      <ButtonGroup display='flex' mt={5} justifyContent='flex-end'>
+        <Button variant='outline' onClick={onCancel as any}>Cancelar</Button>
+        <Button colorScheme='teal' type='submit'>Guardar</Button>
+      </ButtonGroup>
     </FormControl>
   )
 })
 
-const FormProduct: React.FC<FormProps> = ({ ref, onCancel }) => {
-  return (
-    <Box>
-      <TextInput label='Nombre del producto' id='name' placeholder='Nombre' refInput={ref} type='text'/>
-      <TextInput label='Cantidad' id='cantity' placeholder='Cantidad' type='number' refInput={ref}/>
-      <ButtonGroup display='flex' mt={5} justifyContent='flex-end'>
-        <Button variant='outline' onClick={onCancel as any}>Cancelar</Button>
-        <Button colorScheme='teal'>Guardar</Button>
-      </ButtonGroup>
-    </Box>
-  )
-}
-
 export const Products: React.FC<Props> = ({ productData, productType }) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
-  const ref = useRef(null)
+  const ref = useRef<any>()
 
   const handleNewProduct = (e: React.FormEvent) => {
     e.preventDefault()
     const { target }: any = e
-    const data = Object.fromEntries(new FormData(target))
-    console.log(data)
+    const data = Object.fromEntries(new FormData(target)) as unknown as NewProduct
+    const { name, cantity } = data
+    if (name.length > 0 && cantity.toString().length > 0) {
+      addProduct(productType.toLowerCase(), data)
+      .then(() => {
+        if (ref.current) {
+          ref.current.reset()
+        }
+        onClose()
+      })
+      .catch(err => console.log('Error adding new product', err))
+    }
   }
 
   return (
@@ -89,7 +99,7 @@ export const Products: React.FC<Props> = ({ productData, productType }) => {
             p={2}
           >
           {
-            productData.map(({ name, id }) => <ProductInfo key={id} name={name} id={id} />)
+            productData.map(el => <ProductInfo key={el.id} name={el.name} id={el.id} />)
           }
             <Popover
               isOpen={isOpen}
@@ -105,7 +115,7 @@ export const Products: React.FC<Props> = ({ productData, productType }) => {
               <PopoverContent p={5}>
                 <PopoverArrow />
                 <PopoverCloseButton />
-                <FormProduct ref={ref} onCancel={onClose} />
+                <FormProduct ref={ref} onCancel={onClose} handleNewProduct={handleNewProduct} />
               </PopoverContent>
             </Popover>
           </Box>

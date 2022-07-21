@@ -61,8 +61,7 @@ export const formatPendingData = (data: PendingData[], billNumber: string) => {
 }
 
 export const addProduct = async (ref: string, data: NewProduct) => {
-  const refDoc = doc(db, ref)
-  return await setDoc(refDoc, data)
+  return await addDoc(collection(db, ref), data)
 }
 
 export const updatingPendingBill = async (dataBill: UpdatePendingBillData) => {
