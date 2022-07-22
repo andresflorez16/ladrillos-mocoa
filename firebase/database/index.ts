@@ -4,6 +4,7 @@ import {
   doc,
   addDoc,
   setDoc,
+  onSnapshot,
   query,
   where,
   getDoc,
@@ -64,6 +65,9 @@ export const addProduct = async (ref: string, data: NewProduct) => {
   return await addDoc(collection(db, ref), data)
 }
 
-export const updatingPendingBill = async (dataBill: UpdatePendingBillData) => {
-  const { data } = await api.put('/api/database/updatePending', dataBill)
+export const listeningInventory = (callback: any, product: string) => {
+  return onSnapshot(collection(db, product), (data) => {
+    const bricks = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+    callback(bricks)
+  })
 } 

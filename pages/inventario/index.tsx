@@ -5,7 +5,7 @@ import {
   Text
 } from '@chakra-ui/react'
 import { useUser, USER_STATES } from 'hooks'
-import { getInventory } from '../../firebase'
+import { getInventory, listeningInventory } from '../../firebase'
 import { Loader, Products } from 'components/ui'
 import { Inventory } from 'interfaces'
 
