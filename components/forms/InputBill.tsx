@@ -19,7 +19,7 @@ interface Props {
 export const InputBill: React.FC<Props> = ({ product, id, setData }) => {
   const [ cantity, setCantity ] = useState('1')
   const [value, setValue] = useState('1')
-  const [productClass, setProductClass] = useState(product[0].name)
+  const [productClass, setProductClass] = useState<ProductData | any>(product.length > 0 ? product[0].name : '')
 
   const getSubtotal = () => {
     const formatCantity = parseFloat(cantity)

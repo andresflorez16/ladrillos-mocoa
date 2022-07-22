@@ -71,3 +71,7 @@ export const listeningInventory = (callback: any, product: string) => {
     callback(bricks)
   })
 } 
+
+export const getProductData = async (id: string, ref: string) => {
+  return await getDoc(doc(db, ref, id)) 
+}

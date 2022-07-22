@@ -5,13 +5,9 @@ import {
   Text,
   Link
 } from '@chakra-ui/react'
+import { Product } from 'interfaces'
 
-type Props = {
-  name: string,
-  id: string
-}
-
-export const ProductInfo: React.FC<Props> = ({ name, id }) => {
+export const ProductInfo: React.FC<{ product: Product }> = ({ product }) => {
   return (
     <Box
       borderBottom='1px solid #aaa7'
@@ -20,7 +16,7 @@ export const ProductInfo: React.FC<Props> = ({ name, id }) => {
       transition='background .3s ease'
       borderRadius='lg'
     >
-      <NextLink href={`/inventario/${id}`}>
+      <NextLink href={`/inventario/${product.id}`}>
         <Link
           display='flex'
           justifyContent='space-between'
@@ -30,11 +26,11 @@ export const ProductInfo: React.FC<Props> = ({ name, id }) => {
           <Text 
             color='#fff'
             display='inline-block'
-          >{name}</Text>
+          >{product.name}</Text>
           <Text
             color='#fff'
             display='inline-block'
-          >Cantidad: 100</Text>
+          >Cantidad: {product.cantity}</Text>
         </Link>
       </NextLink>
     </Box>

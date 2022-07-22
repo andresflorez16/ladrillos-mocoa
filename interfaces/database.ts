@@ -2,6 +2,7 @@ import { ProductData } from './forms-props'
 
 export interface Product {
 	name: string,
+	cantity?: number,
 	id: string,
 }
 

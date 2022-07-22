@@ -99,7 +99,7 @@ export const Products: React.FC<Props> = ({ productData, productType }) => {
             p={2}
           >
           {
-            productData.map(el => <ProductInfo key={el.id} name={el.name} id={el.id} />)
+            productData.map(el => <ProductInfo key={el.id} product={el} />)
           }
             <Popover
               isOpen={isOpen}

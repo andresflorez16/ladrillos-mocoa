@@ -5,31 +5,30 @@ import {
   Text
 } from '@chakra-ui/react'
 import { useUser, USER_STATES } from 'hooks'
-import { getInventory, listeningInventory } from '../../firebase'
+import { listeningInventory } from '../../firebase'
 import { Loader, Products } from 'components/ui'
-import { Inventory } from 'interfaces'
+import { Inventory, Product } from 'interfaces'
 
 const InventoryPage: NextPage = () => {
-  const [inventory, setInventory] = useState<Inventory | any>({})
+  const [bricks, setBricks] = useState<Product[] | any>([])
+  const [cements, setCements] = useState<Product[] | any>([])
   const [loading, setLoading] = useState(false)
   const user = useUser()
 
   useEffect(() => {
-    let isSubscriber = true
+    let unSubscriber: any
     if (user) {
       setLoading(true)
-      getInventory()
-      .then(({ brickData, cementData }) => {
-        if (isSubscriber) {
-          const bricks = brickData.docs.map(el => ({ ...el.data(), id: el.id }))
-          const cements = cementData.docs.map(el => ({ ...el.data(), id: el.id }))
-          setInventory({ bricks, cements })
-          setLoading(false)
-       } 
-      })
-      .catch(err => console.log('Error getting inventory', err))
+      unSubscriber = listeningInventory((bricks: Product[]) => {
+        setLoading(false)
+        setBricks(bricks)
+      }, 'ladrillos')
+      unSubscriber = listeningInventory((cements: Product[]) => {
+        setLoading(false)
+        setCements(cements)
+      }, 'cementos')
     }
-    return () => { isSubscriber = false }
+    return () => unSubscriber && unSubscriber()
   }, [user])
 
   return (
@@ -49,8 +48,8 @@ const InventoryPage: NextPage = () => {
             <Text color='#fff' fontWeight='bold' fontSize='2em' borderBottom='1px solid #aaa'>Inventario</Text>
             <Text color='#fff'>{new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
             <Box w={{ base: 'full', md: '50%' }} m='0 auto'>
-              <Products productData={inventory.bricks} productType='Ladrillos' />
-              <Products productData={inventory.cements} productType='Cementos' />
+              <Products productData={bricks} productType='Ladrillos' />
+              <Products productData={cements} productType='Cementos' />
             </Box>
           </>
       }

@@ -1,16 +1,32 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { NextPage, GetStaticProps } from 'next'
 import { Box, Text, Spinner } from '@chakra-ui/react'
 import { useUser, USER_STATES } from 'hooks'
-import { getInventory } from '../../firebase'
+import { listeningInventory } from '../../firebase'
 import { BillForm } from 'components/forms'
-import { Inventory } from 'interfaces'
+import { Loader } from 'components/ui'
+import { Product } from 'interfaces'
 
-const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
+const BillPage: NextPage = () => {
+  const [bricks, setBricks] = useState<Product[] | any>([])
+  const [cements, setCements] = useState<Product[] | any>([])
+  const [loading, setLoading] = useState(false)
   const user = useUser()
 
   useEffect(() => {
-    user
+    let unSubscriber: any
+    if (user) {
+      setLoading(true)
+      unSubscriber = listeningInventory((bricks: Product[]) => {
+        setLoading(false)
+        setBricks(bricks)
+      }, 'ladrillos')
+      unSubscriber = listeningInventory((cements: Product[]) => {
+        setLoading(false)
+        setCements(cements)
+      }, 'cementos')
+    }
+    return () => unSubscriber && unSubscriber()
   }, [user])
 
   return (
@@ -23,13 +39,13 @@ const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
       p={2}
     >
       {
-        user === USER_STATES.NOT_KNOWN &&
-          <Box w='100%' h='65vh' display='flex' justifyContent='center' mt={100} >
-            <Spinner color='white' w={100} h={100} thickness='10px'/>
+        user === USER_STATES.NOT_KNOWN || loading && 
+          <Box w='100%' h='80vh'>
+            <Loader />
           </Box>
       }
       {
-        user &&
+        user && !loading &&
           <>
             <Text fontSize='1.5em' borderBottom='1px solid #aaa' mb={5} fontWeight='bold' color='white'>Nueva venta</Text>
             <BillForm bricks={bricks} cements={cements} />
@@ -37,13 +53,6 @@ const BillPage: NextPage<Inventory> = ({ bricks, cements }) => {
       }
     </Box>
   )
-}
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { brickData, cementData } = await getInventory()
-  const bricks = brickData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-  const cements = cementData.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-  return { props: { bricks, cements } }
 }
 
 export default BillPage
