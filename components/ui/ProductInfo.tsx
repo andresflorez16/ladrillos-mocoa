@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react'
 import { Product } from 'interfaces'
 
-export const ProductInfo: React.FC<{ product: Product }> = ({ product }) => {
+export const ProductInfo: React.FC<{ product: Product, type: string }> = ({ product, type }) => {
   return (
     <Box
       borderBottom='1px solid #aaa7'
@@ -16,7 +16,7 @@ export const ProductInfo: React.FC<{ product: Product }> = ({ product }) => {
       transition='background .3s ease'
       borderRadius='lg'
     >
-      <NextLink href={`/inventario/${product.id}`}>
+      <NextLink href={`/inventario/${product.id}?type=${type.toLowerCase()}`}>
         <Link
           display='flex'
           justifyContent='space-between'

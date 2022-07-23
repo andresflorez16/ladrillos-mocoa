@@ -72,6 +72,6 @@ export const listeningInventory = (callback: any, product: string) => {
   })
 } 
 
-export const getProductData = async (id: string, ref: string) => {
-  return await getDoc(doc(db, ref, id)) 
+export const getProductData = (callback: any, id: string, ref: string) => {
+  return onSnapshot(doc(db, ref, id), (res) => callback({ ...res.data(), id: res.id }))
 }
