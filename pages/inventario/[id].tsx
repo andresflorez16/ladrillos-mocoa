@@ -14,12 +14,21 @@ const Product: NextPage = () => {
   const user = useUser()
 
   useEffect(() => {
-
+    user
   }, [user])
   return (
-    <>
-      hola
-    </>
+    <Box
+      m='0 auto'
+      w='90%'
+      h='83vh'
+    >
+      {
+        user === USER_STATES.NOT_KNOWN &&
+          <Box w='100%' h='100%'>
+            <Loader />
+          </Box>
+      }
+    </Box>
   )
 }
 
