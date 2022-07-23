@@ -14,6 +14,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from '@chakra-ui/react'
+import { SmallAddIcon } from '@chakra-ui/icons'
 import { Product, NewProduct } from 'interfaces'
 import { ProductInfo } from './ProductInfo'
 import { addProduct } from '../../firebase'
@@ -110,7 +111,7 @@ export const Products: React.FC<Props> = ({ productData, productType }) => {
               closeOnBlur={true}
             >
               <PopoverTrigger>
-                <Button mt={5} size='sm'>Añadir otro</Button>
+                <Button rightIcon={<SmallAddIcon />} colorScheme='green' mt={5} size='sm'>Añadir otro</Button>
               </PopoverTrigger>
               <PopoverContent p={5}>
                 <PopoverArrow />

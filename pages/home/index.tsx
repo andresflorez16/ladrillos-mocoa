@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
-import { Box, Text, Button } from '@chakra-ui/react'
+import NextLink from 'next/link'
+import { Box, Text, Link } from '@chakra-ui/react'
 import { useUser, USER_STATES } from 'hooks'
 import { Loader } from 'components/ui'
 
@@ -25,33 +26,70 @@ const HomePage: NextPage = () => {
 						alignItems='center'
 						justifyContent='center'
 						flexWrap='wrap'
+						flexDir={{ base: 'column', md: 'row' }}
 						gap={5}
 						h='100%'
 					>
-						<Box bg='#ddd' p={5} borderRadius='lg' flex='1' _hover={{ padding: '1.3em' }}>
-							<Text 
-								fontWeight='bold'
-								fontSize='lg' 
-							>Inventario</Text>
-							<Text>Para ver las ventas, modificar u añadir productos</Text>
-							<Button colorScheme='blue'>Ir</Button>
-						</Box>
-						<Box bg='#ddd' p={5} borderRadius='lg' flex='1'>
-							<Text 
-								fontWeight='bold'
-								fontSize='lg' 
-							>Facturar</Text>
-							<Text>Generar nuevas facturas</Text>
-							<Button colorScheme='blue'>Ir</Button>
-						</Box>
-						<Box bg='#ddd' p={5} borderRadius='lg' flex='1'>
-							<Text 
-								fontWeight='bold'
-								fontSize='lg' 
-							>Pendientes</Text>
-							<Text>Revisar facturas pendientes</Text>
-							<Button colorScheme='blue'>Ir</Button>
-						</Box>
+						<NextLink href='/inventario'>
+							<Link
+								w={{ base: '100%', md: 'auto' }}
+							>
+								<Box 
+									bg='#ddd'
+									p={5}
+									borderRadius='lg'
+									flex={{ base: '0', md: '5' }} 
+									transition='all .3s ease'
+									_hover={{ boxShadow: '1px 5px 5px #aaa6' }}
+								>
+									<Text 
+										fontWeight='bold'
+										fontSize='lg' 
+									>Inventario</Text>
+									<Text>Para ver las ventas, modificar u añadir productos</Text>
+								</Box>
+							</Link>
+						</NextLink>
+						<NextLink href='/facturar'>
+							<Link
+								w={{ base: '100%', md: 'auto' }}
+							>
+								<Box 
+									bg='#ddd'
+									p={5}
+									borderRadius='lg'
+									flex={{ base: '0', md: '5' }}
+									transition='all .3s ease'
+									_hover={{ boxShadow: '1px 5px 5px #aaa6' }}
+								>
+									<Text 
+										fontWeight='bold'
+										fontSize='lg' 
+									>Facturar</Text>
+									<Text>Generar nuevas facturas</Text>
+								</Box>
+							</Link>
+						</NextLink>
+						<NextLink href='/pendientes'>
+							<Link
+								w={{ base: '100%', md: 'auto' }}
+							>
+								<Box 
+									bg='#ddd'
+									p={5}
+									borderRadius='lg'
+									flex={{ base: '0', md: '5' }}
+									transition='all .3s ease'
+									_hover={{ boxShadow: '1px 5px 5px #aaa6' }}
+								>
+									<Text 
+										fontWeight='bold'
+										fontSize='lg' 
+									>Pendientes</Text>
+									<Text>Revisar facturas pendientes</Text>
+								</Box>
+							</Link>
+						</NextLink>
 					</Box>
 			}
 		</Box>

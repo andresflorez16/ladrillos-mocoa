@@ -30,7 +30,7 @@ export const ProductInfo: React.FC<{ product: Product, type: string }> = ({ prod
           <Text
             color='#fff'
             display='inline-block'
-          >Cantidad: {product.cantity}</Text>
+          >En inventario: {product.cantity}</Text>
         </Link>
       </NextLink>
     </Box>

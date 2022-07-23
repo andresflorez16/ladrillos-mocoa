@@ -7,7 +7,7 @@ import {
 import { useUser, USER_STATES } from 'hooks'
 import { listeningInventory } from '../../firebase'
 import { Loader, Products } from 'components/ui'
-import { Inventory, Product } from 'interfaces'
+import { Product } from 'interfaces'
 
 const InventoryPage: NextPage = () => {
   const [bricks, setBricks] = useState<Product[] | any>([])

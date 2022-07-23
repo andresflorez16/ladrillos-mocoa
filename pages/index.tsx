@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    user && router.replace('/facturar')
+    user && router.replace('/home')
   }, [user])
 
   return (
