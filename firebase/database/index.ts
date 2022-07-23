@@ -5,13 +5,11 @@ import {
   addDoc,
   setDoc,
   onSnapshot,
-  query,
-  where,
-  getDoc,
+  updateDoc,
   getDocs
 } from 'firebase/firestore'
 import { app } from '../client'
-import { DataBillForm, PendingData, UpdatePendingBillData, NewProduct } from 'interfaces'
+import { DataBillForm, PendingData, UpdatePendingBillData, NewProduct, Product } from 'interfaces'
 import { api } from 'api-queries'
 
 const db = getFirestore(app)
@@ -73,5 +71,14 @@ export const listeningInventory = (callback: any, product: string) => {
 } 
 
 export const getProductData = (callback: any, id: string, ref: string) => {
-  return onSnapshot(doc(db, ref, id), (res) => callback({ ...res.data(), id: res.id }))
+  try {
+    return onSnapshot(doc(db, ref, id), (res) => callback({ ...res.data(), id: res.id }))
+  } catch (err) {
+    return null
+  }
+}
+
+export const updateProduct = async (ref: string, id: string, data: Product) => {
+  const docRef = doc(db, ref, id)
+  return await updateDoc(docRef, { name: data.name, cantity: data.cantity })
 }

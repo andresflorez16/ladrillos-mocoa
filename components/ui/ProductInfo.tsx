@@ -16,7 +16,7 @@ export const ProductInfo: React.FC<{ product: Product, type: string }> = ({ prod
       transition='background .3s ease'
       borderRadius='lg'
     >
-      <NextLink href={`/inventario/${product.id}?type=${type.toLowerCase()}`}>
+      <NextLink href={`/inventario/${type.toLowerCase()}/${product.id}`}>
         <Link
           display='flex'
           justifyContent='space-between'
