@@ -13,6 +13,7 @@ import {
   PopoverContent,
   PopoverArrow,
   PopoverCloseButton,
+  useToast
 } from '@chakra-ui/react'
 import { SmallAddIcon } from '@chakra-ui/icons'
 import { Product, NewProduct } from 'interfaces'
@@ -36,6 +37,24 @@ type InputProps = {
   placeholder: string,
   type: string,
   refInput?: typeof useRef | any
+}
+
+const toastInfo = (type: string) => {
+  if (type === 'success') {
+    return {
+      title: 'Producto agregado al inventario',
+      description: 'El producto ha sido agregado con éxito',
+      duration: 5000,
+      isClosable: true,
+    }
+  } else {
+    return {
+      title: 'Ocurrió un error',
+      description: 'El producto no se ha podido agregar al inventario inténtelo de nuevo',
+      duration: 5000,
+      isClosable: true,
+    }
+  }
 }
 
 const TextInput: React.FC<InputProps> = React.forwardRef(({ label, name, placeholder, type }, refInput) => {
@@ -62,6 +81,7 @@ const FormProduct: React.FC<FormProps> = React.forwardRef(({ onCancel, handleNew
 
 export const Products: React.FC<Props> = ({ productData, productType }) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
+  const toast = useToast()
   const ref = useRef<any>()
 
   const handleNewProduct = (e: React.FormEvent) => {
@@ -73,12 +93,16 @@ export const Products: React.FC<Props> = ({ productData, productType }) => {
       addProduct(productType.toLowerCase(), data)
       .then(() => {
         if (ref.current) {
+          toast({ ...toastInfo('success'), status: 'success' })
           ref.current.reset()
         }
         onClose()
       })
-      .catch(err => console.log('Error adding new product', err))
-    }
+      .catch(err => {
+        toast({ ...toastInfo('error'), status: 'error' })
+        console.log('Error adding new product', err)
+      })
+    } else toast({ ...toastInfo('error'), status: 'error' }) 
   }
 
   return (

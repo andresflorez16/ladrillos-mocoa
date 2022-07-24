@@ -6,6 +6,7 @@ import {
   setDoc,
   onSnapshot,
   updateDoc,
+  deleteDoc,
   getDocs
 } from 'firebase/firestore'
 import { app } from '../client'
@@ -78,7 +79,11 @@ export const getProductData = (callback: any, id: string, ref: string) => {
   }
 }
 
-export const updateProduct = async (ref: string, id: string, data: Product) => {
+export const updateProduct = async (ref: string, id: string, data: NewProduct) => {
   const docRef = doc(db, ref, id)
   return await updateDoc(docRef, { name: data.name, cantity: data.cantity })
+}
+
+export const deleteProduct = async (ref: string, id: string) => {
+  return await deleteDoc(doc(db, ref, id))
 }

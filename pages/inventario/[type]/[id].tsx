@@ -9,20 +9,23 @@ import {
   FormLabel,
   Input,
   Button,
-  Link
+  Link,
+  useToast
 } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Loader } from 'components/ui'
-import { getProductData, updateProduct } from '../../../firebase'
+import { getProductData, updateProduct, deleteProduct } from '../../../firebase'
 import { useUser, USER_STATES } from 'hooks'
-import { Product } from 'interfaces'
+import { Product, NewProduct } from 'interfaces'
+import { toastInfo } from 'utils'
 
 const ProductPage: NextPage = () => {
   const [product, setProduct] = useState<Product | any>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const { query } = useRouter()
+  const { query, replace } = useRouter()
   const user = useUser()
+  const toast = useToast()
 
   useEffect(() => {
     let unSubscriber: any
@@ -33,8 +36,7 @@ const ProductPage: NextPage = () => {
         if (data && data.name) {
           setError(false)
           setProduct(data)
-        }
-        else setError(true)
+        } else setError(true)
       }, query.id as string, query.type as string)
     } else setError(true)
     return () => unSubscriber && unSubscriber()
@@ -44,7 +46,27 @@ const ProductPage: NextPage = () => {
     e.preventDefault()
     const { target } = e
     const productData = Object.fromEntries(new FormData(target as any))
-    console.log(productData)
+    const { name, cantity } = productData as unknown as { name: string, cantity: string }
+    if (name.length > 0 && cantity.length > 0) {
+      updateProduct(query.type as string, query.id as string, { name, cantity: parseInt(cantity) })
+      .then(() => toast({ ...toastInfo('success'), status: 'success' }))
+      .catch(err => {
+        toast({ ...toastInfo('warning'), status: 'warning' })
+        console.log('Error updating product', err)
+      })
+    } else toast({ ...toastInfo('warning'), status: 'warning' }) 
+  }
+
+  const handleDeleteProduct = (e: React.MouseEvent) => {
+    deleteProduct(query.type as string, query.id as string)
+    .then(() => {
+      replace('/inventario')
+      toast({ ...toastInfo('delete'), status: 'error' })
+    })
+    .catch((err) => {
+      toast({ ...toastInfo('warning'), status: 'warning' })
+      console.log('Error deleting product', err)
+    })
   }
 
   return (
@@ -111,6 +133,7 @@ const ProductPage: NextPage = () => {
               <Button mt={{ base: '0', md: '2em' }} colorScheme='green' size='sm' type='submit'>Confirmar</Button>
             </FormControl>
             <Button 
+              onClick={handleDeleteProduct}
               rightIcon={<DeleteIcon />} 
               colorScheme='red'
             >Eliminar del inventario</Button>
