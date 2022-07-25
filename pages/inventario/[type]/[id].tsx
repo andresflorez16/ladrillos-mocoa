@@ -73,7 +73,7 @@ const ProductPage: NextPage = () => {
     <Box
       m='0 auto'
       w='90%'
-      h='83vh'
+      h={{ base: '85vh', md: '83vh' }}
     >
       {
         user === USER_STATES.NOT_KNOWN || loading &&
@@ -93,21 +93,23 @@ const ProductPage: NextPage = () => {
           <Box
             m='0 auto'
             w={{ base: '100%', md: '80%' }}
-            h={{ base: '100%', md: '80%' }}
-            bg='#ddd'
+            h='80%'
+            bg='#ccc'
             borderRadius='lg'
             p={5}
+            position='relative'
           >
             <FormControl
               as='form'
               onSubmit={handleUpdateProduct}
               display='flex'
               justifyContent='center'
-              alignItems='center'
+              alignItems={{ base: 'flex-start', md: 'center' }}
               flexDir={{ base: 'column', sm: 'row' }}
               gap={2}
+              h={{ base: 'auto', md: '15%' }}
             >
-              <Box>
+              <Box h='100%'>
                 <FormLabel fontSize='sm'>Nombre:</FormLabel>
                 <Input 
                   defaultValue={product.name} 
@@ -119,10 +121,11 @@ const ProductPage: NextPage = () => {
                   size='sm'
                 />
               </Box>
-              <Box>
+              <Box h='100%'>
                 <FormLabel fontSize='sm'>Cantidad en inventario:</FormLabel>
                 <Input 
                   name='cantity'
+                  defaultValue={product.cantity}
                   _focus={{ background: '#fff7' }}
                   placeholder='Cantidad' 
                   type='number'
@@ -130,13 +133,28 @@ const ProductPage: NextPage = () => {
                   size='sm'
                 />
               </Box>
-              <Button mt={{ base: '0', md: '2em' }} colorScheme='green' size='sm' type='submit'>Confirmar</Button>
+              <Box h='100%'>
+                <Button 
+                  position={{ base: 'static', md: 'relative' }}
+                  top='7'
+                  colorScheme='green'
+                  size='sm'
+                  type='submit'
+                >
+                  Actualizar
+                </Button>
+              </Box>
             </FormControl>
             <Button 
+              position='absolute'
+              bottom='0'
+              left='0'
               onClick={handleDeleteProduct}
               rightIcon={<DeleteIcon />} 
               colorScheme='red'
-            >Eliminar del inventario</Button>
+            >
+              Eliminar del inventario
+            </Button>
           </Box>
       }
     </Box>

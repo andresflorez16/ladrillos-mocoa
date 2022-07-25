@@ -6,8 +6,7 @@ const refSales = db.collection('ventas')
 const updatePending = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const bill = refSales.doc(req.body.collection).collection('mes').doc(req.body.id)
-    const updated = await bill.update({ shipping: req.body.shipping, pay: req.body.pay, payType: req.body.payType })
-    console.log(updated)
+    await bill.update({ shipping: req.body.shipping, pay: req.body.pay, payType: req.body.payType })
     res.json({})
   }
   catch (err) {

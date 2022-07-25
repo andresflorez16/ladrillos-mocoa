@@ -173,9 +173,7 @@ export const PendingCard: React.FC<Props> = ({ pending, update }) => {
             type='submit'
             _hover={{ background: '#2C536477' }}
             mr={[0, 10]} 
-            variant='solid' 
-            bg='#2C5364' 
-            color='#fff'
+            colorScheme='green'
           >
             Actualizar
           </Button>

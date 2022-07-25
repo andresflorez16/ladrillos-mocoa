@@ -87,3 +87,7 @@ export const updateProduct = async (ref: string, id: string, data: NewProduct) =
 export const deleteProduct = async (ref: string, id: string) => {
   return await deleteDoc(doc(db, ref, id))
 }
+
+export const updatingPendingBill = async (data: UpdatePendingBillData) => {
+  return await api.put<UpdatePendingBillData>('/api/database/updatePending', data)
+}
